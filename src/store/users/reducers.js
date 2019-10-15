@@ -75,7 +75,7 @@ const reducers = (state = initialState, action) => {
             console.log('failure ', action.payload.data.errorMessage);
             return {
                 ...state,
-                error: action.payload.data.errorMessage,
+                error: action.payload.data.errorMessage ? action.payload.data.errorMessage : action.payload,
                 isLoading: false,
             };
 

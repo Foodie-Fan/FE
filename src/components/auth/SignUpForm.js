@@ -22,7 +22,7 @@ const SignUpForm = ({errors, touched, ...props}) => {
 
     return (
         <div className={classes.formBorder}>
-            {props.error.length > 0 && <Toast variant={"warning"} message={props.error} state={true}/>}
+            {props.error && props.error.length > 0 && <Toast variant={"warning"} message={props.error} state={true}/>}
 
             <Typography className={classes.title} variant="h5">SIGN UP</Typography>
             <Form className={classes.formContainer}>
@@ -121,7 +121,7 @@ const FormikSignUpForm = withFormik({
         fd.append('name', values.name);
         fd.append('username', values.username);
         fd.append('password', values.password);
-        fd.append('image', props.file);
+        fd.append('avatar', props.file);
         props.register(fd, props.history);
     },
 })(SignUpForm);
