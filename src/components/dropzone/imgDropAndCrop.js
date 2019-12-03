@@ -14,8 +14,8 @@ import Typography from "@material-ui/core/Typography";
 import 'react-image-crop/dist/ReactCrop.css';
 import Button from "@material-ui/core/Button";
 import {image64toCanvasRef, base64StringtoFile, extractImageFileExtensionFromBase64} from "./utils";
-import Resizer from 'react-image-file-resizer';
 import Collapse from "@material-ui/core/Collapse";
+import loadImage from 'blueimp-load-image'
 
 const useStyles = makeStyles({
         container: {
@@ -118,15 +118,13 @@ function ImgDropAndCrop(props) {
     const classes = useStyles();
     const [crop, setCrop] = React.useState({
         aspect: 1 / 1,
-        x: 20,
-        y: 10,
         width: 215,
         height: 215,
     });
     const [loading, setLoading] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [imgSrc, setImgSrc] = React.useState(null);
-    const [imgType, setImgType] = React.useState(null);
+    const [croppedImg, setCroppedImg] = React.useState(null);
 
     const [toggleCrop, setToggleCrop] = React.useState(false);
     let imagePreviewCanvasRef = React.createRef();
@@ -135,47 +133,41 @@ function ImgDropAndCrop(props) {
         accept: 'image/*',
         maxSize: 10000000000,
         multiple: false,
-        onDrop(acceptedFiles, rejectedFiles, event) {
+        onDrop(acceptedFiles) {
             setSuccess(false);
             setLoading(true);
             setToggleCrop(false);
-            console.log('ACCEPTED FILES ', acceptedFiles[0]);
             if (acceptedFiles) {
-                Resizer.imageFileResizer(
-                    acceptedFiles[0],
-                    400,
-                    "auto",
-                    'JPEG',
-                    100,
-                    0,
-                    uri => {
-                        console.log('URI ', uri);
-                        setImgSrc(uri);
-                    },
-                    'base64'
-                );
+                const loadImageOptions = {canvas: true, maxWidth: 306};
+                loadImage.parseMetaData(acceptedFiles[0], (data) => {
+                    if (data.exif && data.exif.get('Orientation')) {
+                        loadImageOptions.orientation = data.exif.get('Orientation')
+                    }
+                    loadImage(acceptedFiles[0], (canvas) => {
+                        setImgSrc(canvas.toDataURL(acceptedFiles[0].type));
+                    }, loadImageOptions);
+                });
                 setTimeout(() => {
                     setSuccess(true);
                     setLoading(false);
                 }, 300);
-            }
-
-            const fileReader = new FileReader();
-            fileReader.readAsDataURL(acceptedFiles[0]);
-            fileReader.onload = function (e) {
-                console.log('IMG ', fileReader.result);
+            } else {
+                setTimeout(() => {
+                    setSuccess(false);
+                    setLoading(false);
+                }, 300);
             }
         }
     });
 
     const handleOnCropComplete = (crop, percentCrop) => {
         const canvasRef = imagePreviewCanvasRef.current;
-        image64toCanvasRef(canvasRef, imgSrc, crop);
+        image64toCanvasRef(canvasRef, imgSrc, crop, setCroppedImg);
     };
 
     const handleCropImg = () => {
         const canvasRef = imagePreviewCanvasRef.current;
-        const imgSrcExt = extractImageFileExtensionFromBase64(imgSrc);
+        const imgSrcExt = extractImageFileExtensionFromBase64(croppedImg);
 
         const imageData64 = canvasRef.toDataURL('image/' + imgSrcExt);
         const myFilename = "previewFile." + imgSrcExt;
@@ -204,26 +196,30 @@ function ImgDropAndCrop(props) {
                     </IconButton>
                     {loading && <CircularProgress size={68} className={classes.iconPosition}/>}
                     <input {...getInputProps()}/>
-                    {isDragActive ? <p>Drop the files here ...</p> :
-                        <p>Drag your profile image, or click to select</p>}
-                    {isDragReject && (<p>Some files will be rejected</p>)}
+                    {!isDragReject
+                        ? (isDragActive
+                            ? <p>Drop the files here ...</p>
+                            : (!success)
+                                ? <p>Drag your profile image, or click to select</p>
+                                : <p>Save your image before submitting the form</p>)
+                        : (<p>Some files will be rejected</p>)}
                 </div>
-                    <Collapse in={imgSrc && !toggleCrop}>
-                        <Card className={classes.imgContainer}>
-                            <Typography variant={"h5"} className={classes.imgTitle}>Crop your image</Typography>
-                            <ReactCrop
-                                src={imgSrc}
-                                crop={crop}
-                                onChange={newCrop => setCrop(newCrop)}
-                                minWidth={215}
-                                minHeight={215}
-                                keepSelection={true}
-                                onComplete={(crop, pixelCrop) => handleOnCropComplete(crop, pixelCrop)}
-                            />
-                            <canvas className={classes.canvas} ref={imagePreviewCanvasRef}></canvas>
-                            <Button className={classes.saveBtn} onClick={() => handleCropImg()}>Save</Button>
-                        </Card>
-                    </Collapse>
+                <Collapse in={imgSrc && !toggleCrop}>
+                    <Card className={classes.imgContainer}>
+                        <Typography variant={"h5"} className={classes.imgTitle}>Crop your image</Typography>
+                        <ReactCrop
+                            src={imgSrc}
+                            crop={crop}
+                            onChange={newCrop => setCrop(newCrop)}
+                            minWidth={215}
+                            minHeight={215}
+                            keepSelection={true}
+                            onComplete={(crop, pixelCrop) => handleOnCropComplete(crop, pixelCrop)}
+                        />
+                        <canvas className={classes.canvas} ref={imagePreviewCanvasRef}></canvas>
+                        <Button className={classes.saveBtn} onClick={() => handleCropImg()}>Save</Button>
+                    </Card>
+                </Collapse>
             </div>
 
         </>

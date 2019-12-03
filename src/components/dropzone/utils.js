@@ -1,9 +1,8 @@
-export function image64toCanvasRef (canvasRef, image64, pixelCrop) {
+export function image64toCanvasRef(canvasRef, image64, pixelCrop, setCroppedImg) {
     const canvas = canvasRef; // document.createElement('canvas');
     canvas.width = pixelCrop.width;
     canvas.height = pixelCrop.height;
     const ctx = canvas.getContext('2d');
-
     const image = new Image();
     image.src = image64;
 
@@ -23,15 +22,15 @@ export function image64toCanvasRef (canvasRef, image64, pixelCrop) {
             pixelCrop.height
         );
     };
-    // setCroppedImg(canvas.toDataURL());
+    setCroppedImg(canvas.toDataURL('image/jpeg'));
 }
 
-export function extractImageFileExtensionFromBase64 (base64Data) {
+export function extractImageFileExtensionFromBase64(base64Data) {
     return base64Data.substring('data:image/'.length, base64Data.indexOf(';base64'))
 }
 
 
-export function base64StringtoFile (base64String, filename) {
+export function base64StringtoFile(base64String, filename) {
     var arr = base64String.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
