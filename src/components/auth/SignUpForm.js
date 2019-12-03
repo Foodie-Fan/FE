@@ -117,6 +117,7 @@ const FormikSignUpForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
+        console.log('avatar ', props.file)
         const fd = new FormData();
         fd.append('name', values.name);
         fd.append('username', values.username);
