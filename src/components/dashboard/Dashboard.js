@@ -5,7 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import {getUser} from "../../store/users/authActions";
 import Avatar from "@material-ui/core/Avatar";
 import Resizer from 'react-image-file-resizer';
-import VerticalTabs from "./Tabs";
+import IconLabelTabs from "./Tabs";
 
 const useStyles = makeStyles({
     profileContainer: {
@@ -43,7 +43,7 @@ function Dashboard(props) {
                     <Typography variant={"h5"}>{props.name}</Typography>
                 </div>
             </div>
-            <VerticalTabs />
+            <IconLabelTabs />
         </>
     )
 }
