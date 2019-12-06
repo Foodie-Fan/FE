@@ -29,6 +29,7 @@ const useStyles = makeStyles(theme => ({
     logoLink: {
         color: "#D80000",
         textDecoration: 'none',
+        whiteSpace: "nowrap",
         "&:hover": {
             color: "#8a0000",
         },

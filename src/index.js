@@ -9,11 +9,38 @@ import thunk from 'redux-thunk';
 
 import reducers from './store/index';
 
+//theme
+import CssBaseline from '@material-ui/core/CssBaseline';
+import {createMuiTheme, responsiveFontSizes, MuiThemeProvider} from '@material-ui/core/styles';
+
 const store = createStore(reducers, applyMiddleware(thunk));
+
+let theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: "#D80000",
+            light: "#ff0000",
+            dark: "#ab0000",
+            contrastText: "white",
+        },
+        secondary: {
+            main: "#C6C6C6",
+            light: "#EDEDED",
+            dark: "#7C7C7C",
+            contrastText: "white",
+        },
+    },
+});
+
+theme = responsiveFontSizes(theme);
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
-    </Provider>, document.getElementById('root'));
+        <MuiThemeProvider theme={theme}>
+            <CssBaseline/>
+            <App/>
+        </MuiThemeProvider>
+    </Provider>
+    , document.getElementById('root'));
 
 serviceWorker.unregister();
