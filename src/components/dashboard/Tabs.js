@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import {makeStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -10,11 +10,15 @@ import Typography from "@material-ui/core/Typography";
 import * as PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import Restaurants from "../restaurants/Restaurants";
+import RestaurantFormikForm from "../restaurants/RestaurantForm";
+import RestaurantSingleView from "../restaurants/RestaurantSingleView";
+import Route from "react-router-dom/es/Route";
 
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
         width: '100%',
+        marginBottom: 30
     },
 });
 
@@ -42,12 +46,23 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
+export const RES_ALL = 'res_all';
+export const RES_FORM = 'res_form';
+export const RES_SINGLE = 'res_single';
+
 export default function IconLabelTabs() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const [restaurant, setRestaurant] = useState(RES_ALL);
+    const [singleRestaurant, setSingleRestaurant] = useState();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleSingleRestaurant = (r, s) =>{
+        setRestaurant(r);
+        setSingleRestaurant(s)
     };
 
     return (
@@ -65,7 +80,9 @@ export default function IconLabelTabs() {
                 <Tab icon={<PersonPinIcon/>} label="SETTINGS"/>
             </Tabs>
             <TabPanel value={value} index={0}>
-                <Restaurants />
+                {restaurant === RES_ALL && <Restaurants setRestaurant={setRestaurant} handleSingleRestaurant={handleSingleRestaurant}/>}
+                {restaurant === RES_FORM && <RestaurantFormikForm setRestaurant={setRestaurant} />}
+                {restaurant === RES_SINGLE && <RestaurantSingleView restaurant={singleRestaurant} setRestaurant={setRestaurant}/>}
             </TabPanel>
             <TabPanel value={value} index={1}>
                 Page Two

@@ -4,6 +4,8 @@ import {getRestaurants} from "../../store/restaurants/restaurantsActions";
 import Grid from "@material-ui/core/Grid";
 import Restaurant from "./Restaurant";
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import Button from "@material-ui/core/Button";
+import {RES_FORM, RES_SINGLE} from "../dashboard/Tabs";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,13 +30,13 @@ function Restaurants(props) {
     return (
         <div className={classes.root}>
             <div className={classes.filter}>
-                filter
+                <Button color={"primary"} onClick={() => props.setRestaurant(RES_FORM)}>Create restaurant</Button>
             </div>
             <Grid container spacing={1}>
                 {props.restaurants.length > 0 && (
                     props.restaurants.map((restaurant, index) => (
-                        <Grid item xs={12} sm={4} md={3}>
-                            <Restaurant restaurant={restaurant}/>
+                        <Grid item xs={12} sm={4} md={3} onClick={() => props.handleSingleRestaurant(RES_SINGLE, restaurant)}>
+                            <Restaurant restaurant={restaurant} />
                         </Grid>
                     ))
                 )}
