@@ -9,12 +9,24 @@ import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
 import {createRestaurant, setImage} from "../../store/restaurants/restaurantsActions";
 import {RES_ALL} from "../dashboard/Tabs";
+import Rating from "@material-ui/lab/Rating";
 
 function RestaurantForm(props) {
     const classes = useFormStyles();
+    const [value, setValue] = React.useState(2);
+
     const setFile = (img) => {
         props.setImage(img)
     };
+
+    const defineError = (name) => {
+        if (props.touched[name] && props.errors[name]) return `${classes.errorField}`
+    };
+
+    const defineLabelError = (name) => {
+        if (props.touched[name] && props.errors[name]) return `${classes.errorLabel}`
+    };
+
     return (
         <>
             <Button color={"primary"} onClick={() => props.setRestaurant(RES_ALL)}>Back</Button>
@@ -24,35 +36,40 @@ function RestaurantForm(props) {
                         Create restaurant
                     </Box>
                 </Typography>
-                <label className={classes.label}>
-                    Restaurant name
-                    <Field type="text" name="name" placeholder="Restaurant name" className={classes.input}/>
+                <label className={`${classes.label} ${defineLabelError('name')}`}>
+                    Restaurant name*
+                    <Field type="text" name="name" placeholder="Restaurant name" className={`${classes.input} ${defineError('name')}`}/>
                 </label>
 
-                <label className={classes.label}>
-                    Type of cuisine
-                    <Field type="text" name="cuisine" placeholder="Type of cuisine" className={classes.input}/>
+                <label className={`${classes.label} ${defineLabelError('cuisine')}`}>
+                    Type of cuisine*
+                    <Field type="text" name="cuisine" placeholder="Type of cuisine" className={`${classes.input} ${defineError('cuisine')}`}/>
                 </label>
 
-                <label className={classes.label}>
-                    Location
-                    <Field type="text" name="location" placeholder="Location" className={classes.input}/>
+                <label className={`${classes.label} ${defineLabelError('location')}`}>
+                    Location*
+                    <Field type="text" name="location" placeholder="Location" className={`${classes.input} ${defineError('location')}`}/>
                 </label>
 
-                <label className={classes.label}>
-                    Hours of operation
-                    <Field type="text" name="hours" placeholder="Hours of operation" className={classes.input}/>
+                <label className={`${classes.label} ${defineLabelError('hours')}`}>
+                    Hours of operation*
+                    <Field type="text" name="hours" placeholder="Hours of operation" className={`${classes.input} ${defineError('hours')}`}/>
                 </label>
 
-                <label className={classes.label}>
-                    Overall rating
-                    <Field type="text" name="rating" placeholder="Overall rating" className={classes.input}/>
+                <label className={`${classes.label} ${defineLabelError('review')}`}>
+                    Review*
+                    <Field type="text" name="review" placeholder="Review" className={`${classes.input} ${defineError('review')}`}/>
                 </label>
 
-                <label className={classes.label}>
-                    Review
-                    <Field type="text" name="review" placeholder="Review" className={classes.input}/>
-                </label>
+                <Rating
+                    className={classes.rating}
+                    name="simple-controlled"
+                    value={value}
+                    onChange={(event, newValue) => {
+                        setValue(newValue);
+                        props.setFieldValue("rating", newValue);
+                    }}
+                />
 
                 <ImgDropAndCrop setImage={setFile}/>
 
@@ -80,7 +97,7 @@ const RestaurantFormikForm = withFormik({
         name: Yup.string().required("Please enter restaurant name"),
         cuisine: Yup.string().required("Please enter your type of cuisine"),
         hours: Yup.string().required("Please enter hours of operation"),
-        rating: Yup.string().required("Please enter rating"),
+        location: Yup.string().required("Please enter location"),
         review: Yup.string().required("Please enter your review"),
     }),
 
@@ -94,7 +111,7 @@ const RestaurantFormikForm = withFormik({
         fd.append('rating', values.rating);
         fd.append('review', values.review);
         fd.append('photo', props.file);
-        props.createRestaurant(fd)
+        props.createRestaurant(fd, props.setRestaurant)
     }
 
 })(RestaurantForm);
