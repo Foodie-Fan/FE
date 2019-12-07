@@ -13,6 +13,7 @@ import Restaurants from "../restaurants/Restaurants";
 import RestaurantFormikForm from "../restaurants/RestaurantForm";
 import RestaurantSingleView from "../restaurants/RestaurantSingleView";
 import Route from "react-router-dom/es/Route";
+import Dishes from "../dishes/Dishes";
 
 const useStyles = makeStyles({
     root: {
@@ -50,11 +51,17 @@ export const RES_ALL = 'res_all';
 export const RES_FORM = 'res_form';
 export const RES_SINGLE = 'res_single';
 
+export const DISHES_ALL = 'dishes_all';
+export const DISHES_FORM = 'dishes_form';
+export const DISHES_SINGLE = 'dishes_single';
+
 export default function IconLabelTabs() {
     const classes = useStyles();
     const [value, setValue] = useState(0);
     const [restaurant, setRestaurant] = useState(RES_ALL);
+    const [dishes, setDishes] = useState(DISHES_ALL);
     const [singleRestaurant, setSingleRestaurant] = useState();
+    const [singleDish, setSingleDish] = useState();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -63,6 +70,10 @@ export default function IconLabelTabs() {
     const handleSingleRestaurant = (r, s) =>{
         setRestaurant(r);
         setSingleRestaurant(s)
+    };
+    const handleSingleDish = (r, s) =>{
+        setDishes(r);
+        setSingleDish(s)
     };
 
     return (
@@ -75,7 +86,7 @@ export default function IconLabelTabs() {
                 textColor="secondary"
                 aria-label="icon label tabs example"
             >
-                <Tab icon={<Restaurant/>} label="RESTAURANTS"/>
+                <Tab icon={<Restaurant/>} label="RESTAURANTS" onClick={()=> setRestaurant(RES_ALL)}/>
                 <Tab icon={<FastFood/>} label="DISHES"/>
                 <Tab icon={<PersonPinIcon/>} label="SETTINGS"/>
             </Tabs>
@@ -85,7 +96,9 @@ export default function IconLabelTabs() {
                 {restaurant === RES_SINGLE && <RestaurantSingleView restaurant={singleRestaurant} setRestaurant={setRestaurant}/>}
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Page Two
+                {dishes === DISHES_ALL && <Dishes setDishes={setDishes} handleSingleDish={handleSingleDish}/>}
+                {/*{dishes === DISHES_SINGLE && <RestaurantSingleView dish={singleDish} setRestaurant={setRestaurant}/>}*/}
+
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Page Three

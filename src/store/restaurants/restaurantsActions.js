@@ -8,10 +8,8 @@ import {
     CREATE_RESTAURANT_FAIL
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
-import {REGISTER_FAILURE, REGISTER_START, REGISTER_SUCCESS} from "../users/types";
-import axios from "axios";
+import {RES_ALL} from "../../components/dashboard/Tabs";
 
-//login action
 export const getRestaurants = () => dispatch => {
     dispatch({type: GET_RESTAURANT_START});
     axiosWithAuth()
@@ -20,14 +18,13 @@ export const getRestaurants = () => dispatch => {
         .catch(error => dispatch({type: GET_RESTAURANT_FAIL, payload: error}))
 };
 
-export const createRestaurant = (restaurant) => dispatch => {
+export const createRestaurant = (restaurant, back) => dispatch => {
     dispatch({type: CREATE_RESTAURANT_START});
-    console.log('USER ', restaurant);
     axiosWithAuth()
         .post("/restaurants", restaurant)
         .then(res => {
-            console.log('res ', res);
             dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: restaurant});
+            back(RES_ALL)
         })
         .catch(err => {
             dispatch({type: CREATE_RESTAURANT_FAIL, payload: err.response});

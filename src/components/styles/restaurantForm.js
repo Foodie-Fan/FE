@@ -17,6 +17,9 @@ export const useFormStyles = makeStyles({
         flexDirection: "column",
         marginBottom: 15
     },
+    errorLabel: {
+        color: "red"
+    },
     input: {
         height: "35px",
         borderRadius: "5px",
@@ -26,6 +29,18 @@ export const useFormStyles = makeStyles({
         "&:hover": {
             color: "#00c9cb",
         },
+    },
+    errorField: {
+        border: "1.5px solid #FF472C",
+        borderRadius: "4px",
+        '&:hover': {
+            border: "1.5px solid #FF472C",
+        }
+    },
+    rating: {
+        marginTop: 15,
+        marginBottom: 15,
+        margin: "auto"
     },
     submitBtn: {
         background: "#328ece",
