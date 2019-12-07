@@ -2,13 +2,13 @@ import React, {useEffect} from "react";
 import {Form, Field, withFormik} from "formik";
 import * as Yup from "yup";
 import {connect} from "react-redux";
-import {register, clearError} from "../../store/users/authActions";
+import {register, clearError, setImage} from "../../store/users/authActions";
 import {Link} from "react-router-dom";
 import useStyles from './styleForm'
 import Lock from '@material-ui/icons/Lock'
 import Identity from '@material-ui/icons/PermIdentity'
 import Typography from '@material-ui/core/Typography';
-import ImgDropAndCrop from "../dropzone/imgDropAndCrop";
+import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import Toast from "../toasts/Toast";
 import warning from "react-redux/es/utils/warning";
 import Collapse from "@material-ui/core/Collapse";
@@ -19,6 +19,10 @@ const SignUpForm = ({errors, touched, ...props}) => {
     useEffect(() => {
         props.clearError();
     }, []);
+
+    const setFile = (img) => {
+        props.setImage(img)
+    };
 
     return (
         <div className={classes.formBorder}>
@@ -85,7 +89,8 @@ const SignUpForm = ({errors, touched, ...props}) => {
                     <p className={classes.error}>{errors.confirmPassword}</p>
                 </Collapse>
 
-                <ImgDropAndCrop/>
+                <ImgDropAndCrop setImage={setFile}/>
+
                 <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
             </Form>
             <div className={classes.note}>
@@ -117,7 +122,7 @@ const FormikSignUpForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
-        console.log('avatar ', props.file)
+        console.log('avatar ', props.file);
         const fd = new FormData();
         fd.append('name', values.name);
         fd.append('username', values.username);
@@ -137,5 +142,5 @@ const mapPropsToState = state => {
 
 export default connect(
     mapPropsToState,
-    {register, clearError},
+    {register, clearError, setImage},
 )(FormikSignUpForm);

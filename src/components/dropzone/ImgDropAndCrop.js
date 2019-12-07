@@ -3,8 +3,6 @@ import {useDropzone} from 'react-dropzone'
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import Cloud from '@material-ui/icons/Backup';
 import IconButton from "@material-ui/core/IconButton";
-import {connect} from "react-redux";
-import {setImage} from '../../store/users/authActions';
 import CheckIcon from '@material-ui/icons/Check';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Edit from "@material-ui/icons/Edit";
@@ -28,8 +26,7 @@ const useStyles = makeStyles({
         },
         block: {
             position: 'relative',
-            width: '90%',
-            minWidth: "300px",
+            width: '101%',
             display: "flex",
             justifyContent: "center",
 
@@ -136,8 +133,8 @@ function ImgDropAndCrop(props) {
         onDrop(acceptedFiles) {
             setSuccess(false);
             setLoading(true);
-            setToggleCrop(false);
-            if (acceptedFiles) {
+            if (acceptedFiles.length > 0) {
+                setToggleCrop(false);
                 const loadImageOptions = {canvas: true, maxWidth: 306};
                 loadImage.parseMetaData(acceptedFiles[0], (data) => {
                     if (data.exif && data.exif.get('Orientation')) {
@@ -199,9 +196,12 @@ function ImgDropAndCrop(props) {
                     {!isDragReject
                         ? (isDragActive
                             ? <p>Drop the files here ...</p>
-                            : (!success)
-                                ? <p>Drag your profile image, or click to select</p>
-                                : <p>Save your image before submitting the form</p>)
+                            : (acceptedFiles.length > 0) &&
+                            (toggleCrop)
+                                ? <p>Image was saved</p>
+                                : !success
+                                    ? <p>Drag the image, or click to select</p>
+                                    : <p>Edit the image</p>)
                         : (<p>Some files will be rejected</p>)}
                 </div>
                 <Collapse in={imgSrc && !toggleCrop}>
@@ -226,10 +226,5 @@ function ImgDropAndCrop(props) {
     )
 }
 
-const mapPropsToState = state => {
-    return {
-        image: state.users.image,
-    }
-};
 
-export default connect(mapPropsToState, {setImage})(ImgDropAndCrop);
+export default ImgDropAndCrop;

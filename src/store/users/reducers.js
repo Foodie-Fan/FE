@@ -72,7 +72,6 @@ const reducers = (state = initialState, action) => {
                 image: action.payload.avatar
             };
         case REGISTER_FAILURE:
-            console.log('failure ', action.payload.data.errorMessage);
             return {
                 ...state,
                 error: action.payload.data.errorMessage ? action.payload.data.errorMessage : action.payload,
@@ -80,7 +79,6 @@ const reducers = (state = initialState, action) => {
             };
 
         case SET_IMAGE:
-            console.log('REDUCER IMAGE ', action.payload);
             return {
                 ...state,
                 file: action.payload,
