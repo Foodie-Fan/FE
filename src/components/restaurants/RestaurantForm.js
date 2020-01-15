@@ -8,7 +8,6 @@ import Button from "@material-ui/core/Button";
 import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
 import {createRestaurant, setImage} from "../../store/restaurants/restaurantsActions";
-import {RES_ALL} from "../dashboard/Tabs";
 import Rating from "@material-ui/lab/Rating";
 
 function RestaurantForm(props) {
@@ -28,9 +27,9 @@ function RestaurantForm(props) {
     };
 
     return (
-        <>
-            <Button color={"primary"} onClick={() => props.setRestaurant(RES_ALL)}>Back</Button>
-            <Form className={classes.root}>
+        <div className={classes.root}>
+            <Button color={"primary"} onClick={() => props.history.push('/dashboard/restaurants/')}>Back</Button>
+            <Form className={classes.form}>
                 <Typography variant={"h5"} className={classes.title}>
                     <Box textAlign={"center"}>
                         Create restaurant
@@ -46,9 +45,9 @@ function RestaurantForm(props) {
                     <Field type="text" name="cuisine" placeholder="Type of cuisine" className={`${classes.input} ${defineError('cuisine')}`}/>
                 </label>
 
-                <label className={`${classes.label} ${defineLabelError('location')}`}>
+                <label className={`${classes.label} ${defineLabelError('location1')}`}>
                     Location*
-                    <Field type="text" name="location" placeholder="Location" className={`${classes.input} ${defineError('location')}`}/>
+                    <Field type="text" name="location1" placeholder="Location" className={`${classes.input} ${defineError('location')}`}/>
                 </label>
 
                 <label className={`${classes.label} ${defineLabelError('hours')}`}>
@@ -76,16 +75,16 @@ function RestaurantForm(props) {
                 <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
             </Form>
 
-        </>
+        </div>
     )
 }
 
 const RestaurantFormikForm = withFormik({
-    mapPropsToValues({name, cuisine, location, hours, rating, review, photo}) {
+    mapPropsToValues({name, cuisine, location1, hours, rating, review, photo}) {
         return {
             name: name || '',
             cuisine: cuisine || '',
-            location: location || '',
+            location: location1 || '',
             hours: hours || '',
             rating: rating || '',
             review: review || '',
@@ -111,7 +110,7 @@ const RestaurantFormikForm = withFormik({
         fd.append('rating', values.rating);
         fd.append('review', values.review);
         fd.append('photo', props.file);
-        props.createRestaurant(fd, props.setRestaurant)
+        props.createRestaurant(fd)
     }
 
 })(RestaurantForm);

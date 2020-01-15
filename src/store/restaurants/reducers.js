@@ -6,7 +6,7 @@ import {
     CREATE_RESTAURANT_SUCCESS,
     CREATE_RESTAURANT_FAIL
 } from "./types";
-import {axiosWithAuth} from "../../utils/axiosWithAuth";
+
 import {SET_IMAGE} from "../users/types";
 
 const initialState = {
