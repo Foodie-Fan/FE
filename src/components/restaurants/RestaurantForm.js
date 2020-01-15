@@ -45,9 +45,9 @@ function RestaurantForm(props) {
                     <Field type="text" name="cuisine" placeholder="Type of cuisine" className={`${classes.input} ${defineError('cuisine')}`}/>
                 </label>
 
-                <label className={`${classes.label} ${defineLabelError('location1')}`}>
+                <label className={`${classes.label} ${defineLabelError('loca')}`}>
                     Location*
-                    <Field type="text" name="location1" placeholder="Location" className={`${classes.input} ${defineError('location')}`}/>
+                    <Field type="text" name="loca" placeholder="Location" className={`${classes.input} ${defineError('loca')}`}/>
                 </label>
 
                 <label className={`${classes.label} ${defineLabelError('hours')}`}>
@@ -80,13 +80,13 @@ function RestaurantForm(props) {
 }
 
 const RestaurantFormikForm = withFormik({
-    mapPropsToValues({name, cuisine, location1, hours, rating, review, photo}) {
+    mapPropsToValues({name, cuisine, loca, hours, rating, review, photo}) {
         return {
             name: name || '',
             cuisine: cuisine || '',
-            location: location1 || '',
+            loca: loca || '',
             hours: hours || '',
-            rating: rating || '',
+            rating: rating || 2,
             review: review || '',
             photo: photo || ''
         }
@@ -96,7 +96,7 @@ const RestaurantFormikForm = withFormik({
         name: Yup.string().required("Please enter restaurant name"),
         cuisine: Yup.string().required("Please enter your type of cuisine"),
         hours: Yup.string().required("Please enter hours of operation"),
-        location: Yup.string().required("Please enter location"),
+        loca: Yup.string().required("Please enter location"),
         review: Yup.string().required("Please enter your review"),
     }),
 
@@ -105,12 +105,12 @@ const RestaurantFormikForm = withFormik({
         const fd = new FormData();
         fd.append('name', values.name);
         fd.append('cuisine', values.cuisine);
-        fd.append('location', values.location);
+        fd.append('location', values.loca);
         fd.append('hours', values.hours);
         fd.append('rating', values.rating);
         fd.append('review', values.review);
         fd.append('photo', props.file);
-        props.createRestaurant(fd)
+        props.createRestaurant(fd, props.history)
     }
 
 })(RestaurantForm);

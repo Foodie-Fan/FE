@@ -17,12 +17,14 @@ export const getRestaurants = () => dispatch => {
         .catch(error => dispatch({type: GET_RESTAURANT_FAIL, payload: error}))
 };
 
-export const createRestaurant = (restaurant) => dispatch => {
+export const createRestaurant = (restaurant, history) => dispatch => {
     dispatch({type: CREATE_RESTAURANT_START});
     axiosWithAuth()
         .post("/restaurants", restaurant)
         .then(res => {
-            dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: restaurant});
+            console.log("ACTIONS ", res)
+            dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: res.data});
+            history.push('/dashboard/restaurants')
         })
         .catch(err => {
             dispatch({type: CREATE_RESTAURANT_FAIL, payload: err.response});

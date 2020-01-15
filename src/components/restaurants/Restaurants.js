@@ -33,7 +33,7 @@ function Restaurants(props) {
     return (
         <div className={classes.root}>
             <div className={classes.filter}>
-                <Button color={"primary"} onClick={() => props.history.push("/dashboard/restaurants/form")}>Create restaurant</Button>
+                <Button color={"primary"} onClick={() => props.history.push("/dashboard/restaurants/create-restaurant")}>Create restaurant</Button>
             </div>
             <Grid container spacing={1}>
                 {props.restaurants.length > 0 && (

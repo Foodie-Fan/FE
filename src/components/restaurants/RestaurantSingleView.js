@@ -54,7 +54,7 @@ const useStyles = makeStyle({
 function RestaurantSingleView(props) {
     const {restaurants} = props;
     const id = props.match.params.id
-    const restaurant = restaurants.find(item => item.id === parseInt(id))
+    const restaurant = restaurants.length > 0 ? restaurants.find(item => item.id === parseInt(id)) : []
 
     const classes = useStyles();
     return (

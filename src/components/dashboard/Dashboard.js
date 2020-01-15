@@ -14,6 +14,7 @@ import TabLinks from "./TabLinks";
 import RestaurantSingleView from "../restaurants/RestaurantSingleView";
 import Dish from "../dishes/Dish";
 import RestaurantForm from "../restaurants/RestaurantForm";
+import DishForm from "../dishes/DishForm";
 
 const useStyles = makeStyles({
     profileContainer: {
@@ -56,10 +57,11 @@ function Dashboard(props) {
 
             {/*Routs*/}
             <Route exact path={"/dashboard/restaurants"} component={Restaurants}/>
-            <Route path={"/dashboard/restaurants/:id"} component={RestaurantSingleView}/>
-            <Route path={"/dashboard/restaurants/form"} component={RestaurantForm}/>
+            <Route exact path={"/dashboard/restaurants/:id"} component={RestaurantSingleView}/>
+            <Route exact path={"/dashboard/restaurants/create-restaurant"} component={RestaurantForm}/>
 
-            <Route path={"/dashboard/dishes"} component={Dishes}/>
+            <Route exact path={"/dashboard/dishes"} component={Dishes}/>
+            <Route path={"/dashboard/dishes/create-review"} component={DishForm}/>
 
             <Route path={"/settings"} component={Restaurants}/>
             {/*<IconLabelTabs/>*/}

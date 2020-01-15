@@ -9,14 +9,18 @@ import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
 import {createDish, setImage} from "../../store/dishes/dishesActions";
 import Rating from "@material-ui/lab/Rating";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import TextField from "@material-ui/core/TextField";
+import SearchField from "../search/Search";
 
 function DishForm(props) {
     const classes = useFormStyles();
     const [value, setValue] = React.useState(2);
     //Control restaurant field
-    const [restaurant, setRestaurant] = React.useState(null);
+    const [restaurant, setR] = React.useState("");
+
+    const setRestaurant = (val) => {
+        props.setFieldValue('restaurant', val)
+        setR(val)
+    }
 
     const setFile = (img) => {
         props.setImage(img)
@@ -32,13 +36,15 @@ function DishForm(props) {
 
     return (
         <div className={classes.root}>
-            <Button color={"secondary"} onClick={() => props.manageBack(props.back)}>Back</Button>
+            <Button color={"secondary"} onClick={() => props.history.push('/dashboard/dishes/')}>Back</Button>
+            {props.restaurants &&
             <Form className={classes.form}>
                 <Typography variant={"h5"} className={classes.title}>
                     <Box textAlign={"center"}>
                         Create a review
                     </Box>
                 </Typography>
+
                 <label className={`${classes.label} ${defineLabelError('name')}`}>
                     Review name*
                     <Field type="text" name="name" placeholder="Restaurant name"
@@ -51,30 +57,22 @@ function DishForm(props) {
                            className={`${classes.input} ${defineError('cuisine')}`}/>
                 </label>
 
-                <TextField label="disableCloseOnSelect" margin="normal" fullWidth
-                           onChange={(e) => console.log(e.target.value)}/>
+                {/*restaurant id*/}
+                <label className={`${classes.label} ${defineLabelError('restaurant')}`}>
+                    Restaurant*
+                    <SearchField items={props.restaurants}
+                                 restaurant={restaurant}
+                                 setRestaurant={setRestaurant}
+                                 err={!!(props.touched['restaurant'] && props.errors['restaurant'])}
+                    />
+                </label>
 
-                <Autocomplete
-                    id="controlled-demo"
-                    options={props.restaurants}
-                    getOptionLabel={option => option.name}
-                    value={restaurant}
-                    autoSelect={true}
-                    onChange={(event, newValue) => {
-                        console.log("step ", newValue);
-                        if (newValue) {
-                            setRestaurant(newValue.name);
-                            props.setFieldValue('restaurant', newValue.name)
-                        } else setRestaurant(newValue);
-                    }}
-                    renderInput={params => (
-                        <TextField
-                            {...params}
-                            label={'Restaurant'}
-                            margin="normal"
-                            fullWidth
-                            variant="outlined"/>)}
-                />
+                {/*price*/}
+                <label className={`${classes.label} ${defineLabelError('price')}`}>
+                    Price*
+                    <Field type="number" name="price" placeholder="Review"
+                           className={`${classes.input} ${defineError('price')}`}/>
+                </label>
 
                 <label className={`${classes.label} ${defineLabelError('review')}`}>
                     Review*
@@ -96,18 +94,21 @@ function DishForm(props) {
 
                 <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
             </Form>
+            }
+
 
         </div>
     )
 }
 
 const DishFormikForm = withFormik({
-    mapPropsToValues({name, cuisine, restaurant, rating, review, photo}) {
+    mapPropsToValues({name, cuisine, restaurant, rating, review, photo, price}) {
         return {
             name: name || '',
             cuisine: cuisine || '',
             restaurant: restaurant || '',
-            rating: rating || '',
+            price: price || '',
+            rating: rating || 2,
             review: review || '',
             photo: photo || ''
         }
@@ -117,10 +118,12 @@ const DishFormikForm = withFormik({
         name: Yup.string().required("Please enter restaurant name"),
         cuisine: Yup.string().required("Please enter your type of cuisine"),
         review: Yup.string().required("Please enter your review"),
+        price: Yup.string().required("Please enter your review"),
+        restaurant: Yup.string().required("Please enter your review"),
     }),
 
     handleSubmit(values, {props}) {
-        console.log("restaurant ", values.restaurant)
+        console.log("restaurant ", values)
         // console.log('res_image ', props.file);
         // const fd = new FormData();
         // fd.append('name', values.name);

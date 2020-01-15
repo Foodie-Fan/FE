@@ -39,6 +39,7 @@ const reducers = (state = initialState, {type, payload}) => {
                 error: payload,
                 isLoading: false,
             };
+
         case CREATE_RESTAURANT_START:
             return {
                 ...state,
@@ -46,11 +47,12 @@ const reducers = (state = initialState, {type, payload}) => {
                 isLoading: true,
             };
         case CREATE_RESTAURANT_SUCCESS:
+            console.log("SUCCESS ", ...payload)
             return {
                 ...state,
                 error: "",
                 isLoading: false,
-                restaurants: {...state.restaurants, payload},
+                restaurants: {...state.restaurants, ...payload},
             };
         case  CREATE_RESTAURANT_FAIL:
             return {

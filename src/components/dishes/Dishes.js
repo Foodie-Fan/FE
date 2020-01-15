@@ -32,7 +32,7 @@ function Dishes(props) {
     return (
         <div className={classes.root}>
             <div className={classes.filter}>
-                <Button color={"primary"}>Create review</Button>
+                <Button color={"primary"} onClick={() => props.history.push('/dashboard/dishes/create-review')}>Create review</Button>
             </div>
             <Grid container spacing={1}>
                 {props.dishes.length > 0 && (
