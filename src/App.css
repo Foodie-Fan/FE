@@ -6,3 +6,8 @@ body {
 .ReactCrop__image {
     min-width: 300px;
 }
+
+a{
+    text-decoration: none;
+    color: #4f4f4f;
+}

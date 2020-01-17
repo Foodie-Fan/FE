@@ -41,7 +41,7 @@ const App = () => {
                         <Route path="/signup" component={SignUp}/>
 
                         {/* {private routes} */}
-                        <PrivateRoute exact path="/dashboard" component={Dashboard}/>
+                        <PrivateRoute path="/dashboard" component={Dashboard}/>
 
                         {/* {default} */}
                         <Redirect from="/" to="/dashboard"/>

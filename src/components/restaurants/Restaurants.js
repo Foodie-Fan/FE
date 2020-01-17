@@ -5,11 +5,14 @@ import Grid from "@material-ui/core/Grid";
 import Restaurant from "./Restaurant";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Button from "@material-ui/core/Button";
-import {RES_FORM, RES_SINGLE} from "../dashboard/Tabs";
+import {withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
+        background: 'white',
+        padding: 20,
         [theme.breakpoints.down('md')]: {
             flexDirection: 'column'
         }
@@ -30,13 +33,15 @@ function Restaurants(props) {
     return (
         <div className={classes.root}>
             <div className={classes.filter}>
-                <Button color={"primary"} onClick={() => props.setRestaurant(RES_FORM)}>Create restaurant</Button>
+                <Button color={"primary"} onClick={() => props.history.push("/dashboard/restaurants/create-restaurant")}>Create restaurant</Button>
             </div>
             <Grid container spacing={1}>
                 {props.restaurants.length > 0 && (
                     props.restaurants.map((restaurant, index) => (
-                        <Grid item xs={12} sm={4} md={3} onClick={() => props.handleSingleRestaurant(RES_SINGLE, restaurant)}>
-                            <Restaurant restaurant={restaurant} />
+                        <Grid item xs={12} sm={4} md={3} key={index}>
+                            <Link to={`/dashboard/restaurants/single/${restaurant.id}`}>
+                                <Restaurant key={restaurant.id} restaurant={restaurant}/>
+                            </Link>
                         </Grid>
                     ))
                 )}
@@ -53,4 +58,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps, {getRestaurants})(Restaurants)
+export default connect(mapStateToProps, {getRestaurants})(withRouter(Restaurants))

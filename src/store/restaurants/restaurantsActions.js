@@ -8,7 +8,6 @@ import {
     CREATE_RESTAURANT_FAIL
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
-import {RES_ALL} from "../../components/dashboard/Tabs";
 
 export const getRestaurants = () => dispatch => {
     dispatch({type: GET_RESTAURANT_START});
@@ -18,13 +17,13 @@ export const getRestaurants = () => dispatch => {
         .catch(error => dispatch({type: GET_RESTAURANT_FAIL, payload: error}))
 };
 
-export const createRestaurant = (restaurant, back) => dispatch => {
+export const createRestaurant = (restaurant, history) => dispatch => {
     dispatch({type: CREATE_RESTAURANT_START});
     axiosWithAuth()
         .post("/restaurants", restaurant)
         .then(res => {
-            dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: restaurant});
-            back(RES_ALL)
+            dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: res.data});
+            history.push('/dashboard/restaurants')
         })
         .catch(err => {
             dispatch({type: CREATE_RESTAURANT_FAIL, payload: err.response});

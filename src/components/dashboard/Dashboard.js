@@ -6,6 +6,15 @@ import {getUser} from "../../store/users/authActions";
 import Avatar from "@material-ui/core/Avatar";
 import Resizer from 'react-image-file-resizer';
 import IconLabelTabs from "./Tabs";
+//Routes
+import {Route} from "react-router-dom";
+import Restaurants from "../restaurants/Restaurants";
+import Dishes from "../dishes/Dishes";
+import TabLinks from "./TabLinks";
+import RestaurantSingleView from "../restaurants/RestaurantSingleView";
+import Dish from "../dishes/Dish";
+import RestaurantForm from "../restaurants/RestaurantForm";
+import DishForm from "../dishes/DishForm";
 
 const useStyles = makeStyles({
     profileContainer: {
@@ -31,11 +40,10 @@ function Dashboard(props) {
     const classes = useStyles();
     const [image, setImage] = useState();
     useEffect(() => {
-            props.getUser();
-        }, []);
+        props.getUser();
+    }, []);
     return (
         <>
-            {console.log('IMAGE ', props.image)}
             <div className={classes.profileContainer}>
                 <Avatar alt="Remy Sharp" src={props.image} className={classes.avatar}/>
                 <div className={classes.userInfo}>
@@ -43,7 +51,21 @@ function Dashboard(props) {
                     <Typography variant={"h5"}>{props.name}</Typography>
                 </div>
             </div>
-            <IconLabelTabs />
+
+            {/*Router links*/}
+            <TabLinks/>
+
+            {/*Routs*/}
+
+            <Route path={"/dashboard/restaurants/single/:id"} component={RestaurantSingleView}/>
+            <Route exact path={"/dashboard/restaurants"} component={Restaurants}/>
+            <Route path={"/dashboard/restaurants/create-restaurant"} component={RestaurantForm}/>
+
+            <Route exact path={"/dashboard/dishes"} component={Dishes}/>
+            <Route path={"/dashboard/dishes/create-review"} component={DishForm}/>
+
+            <Route path={"/settings"} component={Restaurants}/>
+            {/*<IconLabelTabs/>*/}
         </>
     )
 }

@@ -45,6 +45,7 @@ const reducers = (state = initialState, {type, payload}) => {
                 isLoading: true,
             };
         case CREATE_DISH_SUCCESS:
+            console.log('create dish success step 2', payload);
             return {
                 ...state,
                 error: "",

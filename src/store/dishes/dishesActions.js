@@ -8,7 +8,6 @@ import {
     CREATE_DISH_FAIL
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
-import {DISHES_ALL} from "../../components/dashboard/Tabs";
 
 export const getDishes = () => dispatch => {
     dispatch({type: GET_DISHES_START});
@@ -18,13 +17,14 @@ export const getDishes = () => dispatch => {
         .catch(error => dispatch({type: GET_DISHES_FAIL, payload: error}))
 };
 
-export const createDish = (restaurant, back) => dispatch => {
+export const createDish = (dish, history) => dispatch => {
     dispatch({type: CREATE_DISH_START});
     axiosWithAuth()
-        .post("/reviews/", restaurant)
+        .post("/reviews", dish)
         .then(res => {
-            dispatch({type: CREATE_DISH_SUCCESS, payload: restaurant});
-            back(DISHES_ALL)
+            console.log('create dish success step 1', res);
+            dispatch({type: CREATE_DISH_SUCCESS, payload: dish});
+            history.push('/dashboard/dishes')
         })
         .catch(err => {
             dispatch({type: CREATE_DISH_FAIL, payload: err.response});

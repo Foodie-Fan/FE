@@ -2,6 +2,10 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 
 export const useFormStyles = makeStyles({
     root: {
+        background: 'white',
+        padding: 20,
+    },
+    form: {
         display: "flex",
         flexDirection: "column",
         width: "40%",
