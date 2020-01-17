@@ -39,7 +39,7 @@ function Restaurants(props) {
                 {props.restaurants.length > 0 && (
                     props.restaurants.map((restaurant, index) => (
                         <Grid item xs={12} sm={4} md={3} key={index}>
-                            <Link to={`/dashboard/restaurants/${restaurant.id}`}>
+                            <Link to={`/dashboard/restaurants/single/${restaurant.id}`}>
                                 <Restaurant key={restaurant.id} restaurant={restaurant}/>
                             </Link>
                         </Grid>

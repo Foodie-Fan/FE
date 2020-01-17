@@ -56,9 +56,10 @@ function Dashboard(props) {
             <TabLinks/>
 
             {/*Routs*/}
+
+            <Route path={"/dashboard/restaurants/single/:id"} component={RestaurantSingleView}/>
             <Route exact path={"/dashboard/restaurants"} component={Restaurants}/>
-            <Route exact path={"/dashboard/restaurants/:id"} component={RestaurantSingleView}/>
-            <Route exact path={"/dashboard/restaurants/create-restaurant"} component={RestaurantForm}/>
+            <Route path={"/dashboard/restaurants/create-restaurant"} component={RestaurantForm}/>
 
             <Route exact path={"/dashboard/dishes"} component={Dishes}/>
             <Route path={"/dashboard/dishes/create-review"} component={DishForm}/>
