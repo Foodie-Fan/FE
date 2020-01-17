@@ -22,7 +22,6 @@ export const createRestaurant = (restaurant, history) => dispatch => {
     axiosWithAuth()
         .post("/restaurants", restaurant)
         .then(res => {
-            console.log("ACTIONS ", res)
             dispatch({type: CREATE_RESTAURANT_SUCCESS, payload: res.data});
             history.push('/dashboard/restaurants')
         })

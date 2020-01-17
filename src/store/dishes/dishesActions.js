@@ -17,14 +17,14 @@ export const getDishes = () => dispatch => {
         .catch(error => dispatch({type: GET_DISHES_FAIL, payload: error}))
 };
 
-export const createDish = (dish, back) => dispatch => {
+export const createDish = (dish, history) => dispatch => {
     dispatch({type: CREATE_DISH_START});
     axiosWithAuth()
-        .post("/reviews/", dish)
+        .post("/reviews", dish)
         .then(res => {
             console.log('create dish success step 1', res);
             dispatch({type: CREATE_DISH_SUCCESS, payload: dish});
-            back(true)
+            history.push('/dashboard/dishes')
         })
         .catch(err => {
             dispatch({type: CREATE_DISH_FAIL, payload: err.response});
