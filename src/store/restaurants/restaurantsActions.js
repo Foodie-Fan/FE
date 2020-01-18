@@ -5,7 +5,7 @@ import {
     SET_IMAGE,
     CREATE_RESTAURANT_START,
     CREATE_RESTAURANT_SUCCESS,
-    CREATE_RESTAURANT_FAIL
+    CREATE_RESTAURANT_FAIL, DELETE_RESTAURANT_START, DELETE_RESTAURANT_SUCCESS, DELETE_RESTAURANT_FAILURE
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
 
@@ -33,3 +33,11 @@ export const createRestaurant = (restaurant, history) => dispatch => {
 export const setImage = (file) => dispatch => {
     dispatch({type: SET_IMAGE, payload: file})
 };
+
+export const deleteRestaurant = (id) => dispatch => {
+    dispatch({type: DELETE_RESTAURANT_START})
+    axiosWithAuth()
+        .delete(`/restaurants/${id}`)
+        .then(res => dispatch({type: DELETE_RESTAURANT_SUCCESS, payload: id}))
+        .catch(err => dispatch({type: DELETE_RESTAURANT_FAILURE, payload: err}))
+}
