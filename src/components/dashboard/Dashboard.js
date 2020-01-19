@@ -16,7 +16,7 @@ import Dish from "../dishes/Dish";
 import RestaurantForm from "../restaurants/RestaurantForm";
 import DishForm from "../dishes/DishForm";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme =>({
     profileContainer: {
         borderBottom: "1.5px solid #EDEDED",
         display: 'flex',
@@ -27,14 +27,30 @@ const useStyles = makeStyles({
         height: 150,
     },
     userInfo: {
-        marginLeft: 70,
+        marginLeft: 50,
+        marginRight: 5,
         marginTop: 20,
+        width: '100%',
     },
     username: {
         marginBottom: 10,
         color: '#535353'
+    },
+    info: {
+        marginTop: 30,
+        display: 'flex',
+        [theme.breakpoints.up('sm')]:{
+            justifyContent: "flex-end"
+        }
+    },
+    infoTitle: {
+        textAlign: 'center',
+        color: '#535353',
+        [theme.breakpoints.up('sm')]:{
+            marginRight: 15,
+        }
     }
-});
+}));
 
 function Dashboard(props) {
     const classes = useStyles();
@@ -49,6 +65,10 @@ function Dashboard(props) {
                 <div className={classes.userInfo}>
                     <Typography className={classes.username}>@{props.username}</Typography>
                     <Typography variant={"h5"}>{props.name}</Typography>
+                    <div className={classes.info}>
+                        <Typography className={classes.infoTitle}>Restaurants: 87</Typography>
+                        <Typography className={classes.infoTitle}>Dishes: 230</Typography>
+                    </div>
                 </div>
             </div>
 
