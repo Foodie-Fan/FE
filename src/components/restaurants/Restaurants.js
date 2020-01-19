@@ -6,7 +6,6 @@ import Restaurant from "./Restaurant";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Button from "@material-ui/core/Button";
 import {withRouter} from "react-router-dom";
-import {Link} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,15 +32,15 @@ function Restaurants(props) {
     return (
         <div className={classes.root}>
             <div className={classes.filter}>
-                <Button color={"primary"} onClick={() => props.history.push("/dashboard/restaurants/create-restaurant")}>Create restaurant</Button>
+                <Button color={"primary"}
+                        onClick={() => props.history.push("/dashboard/restaurants/create-restaurant")}>Create
+                    restaurant</Button>
             </div>
             <Grid container spacing={1}>
                 {props.restaurants.length > 0 && (
                     props.restaurants.map((restaurant, index) => (
                         <Grid item xs={12} sm={4} md={3} key={index}>
-                            <Link to={`/dashboard/restaurants/single/${restaurant.id}`}>
-                                <Restaurant key={restaurant.id} restaurant={restaurant}/>
-                            </Link>
+                            <Restaurant key={restaurant.id} restaurant={restaurant}/>
                         </Grid>
                     ))
                 )}
