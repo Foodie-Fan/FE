@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import makeStyle from '@material-ui/core/styles/makeStyles'
@@ -6,12 +6,16 @@ import Rating from '@material-ui/lab/Rating';
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
+import Dish from "../dishes/Dish";
+import {getRestaurants} from "../../store/restaurants/restaurantsActions";
+import {getDishes} from "../../store/dishes/dishesActions";
 
 const useStyles = makeStyle({
     root: {
         background: 'white',
         paddingLeft: 20,
         paddingRight: 20,
+        paddingBottom: 20,
     },
     card: {
         display: "flex",
@@ -48,6 +52,19 @@ const useStyles = makeStyle({
     btn: {
         margin: 10,
         whiteSpace: 'nowrap'
+    },
+
+    dishCard: {
+        width: '73%',
+        margin: '30px auto',
+        '& .MuiPaper-elevation1':{
+            margin: 10,
+            boxShadow: '0px 1px 7px 1px rgba(0,0,0,0.2), -1px 1px 0px 0px rgba(0,0,0,0.14), 0px 0px 0px -1px rgba(0,0,0,0.12)'
+        }
+    },
+    dishCardTitle:{
+        textAlign: "center",
+        marginBottom: 25,
     }
 });
 
@@ -56,13 +73,19 @@ function RestaurantSingleView(props) {
     const id = props.match.params.id
     const restaurant = restaurants.length > 0 ? restaurants.find(item => item.id === parseInt(id)) : []
 
+    useEffect(() => {
+        props.getRestaurants();
+        props.getDishes();
+    }, []);
+
     const classes = useStyles();
     return (
         <div className={classes.root}>
             {restaurant &&
             <>
                 <div className={classes.top}>
-                    <Button color={"secondary"} onClick={() => props.history.push('/dashboard/restaurants/')}>Back</Button>
+                    <Button color={"secondary"}
+                            onClick={() => props.history.push('/dashboard/restaurants/')}>Back</Button>
                     <div className={classes.top}>
                         <Button color={"primary"} className={classes.btn}>Create a review</Button>
                         <Rating name="read-only" value={restaurant.rating} readOnly/>
@@ -87,6 +110,23 @@ function RestaurantSingleView(props) {
                 <Divider/>
             </>
             }
+            {console.log(props.dishes)}
+            {props.dishes.length > 0 &&
+            <RestaurantsDishes restaurant_id={id} dishes={props.dishes} restaurant_name={restaurant.name}/>
+            }
+
+        </div>
+    )
+}
+
+
+function RestaurantsDishes(props) {
+    const classes = useStyles()
+    const dishes = props.dishes.filter(item => item.restaurant_id === parseInt(props.restaurant_id))
+    return (
+        <div className={classes.dishCard}>
+            <Typography variant={"h6"} className={classes.dishCardTitle}>{props.restaurant_name} dishes: </Typography>
+            {dishes.map(item => <Dish dish={item}/>)}
         </div>
     )
 }
@@ -94,7 +134,8 @@ function RestaurantSingleView(props) {
 const mapStatesToProps = state => {
     return {
         restaurants: state.restaurants.restaurants,
+        dishes: state.dishes.dishes,
     }
 }
 
-export default connect(mapStatesToProps)(RestaurantSingleView)
+export default connect(mapStatesToProps, {getRestaurants, getDishes})(RestaurantSingleView)
