@@ -1,6 +1,5 @@
 import React from 'react'
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
@@ -19,7 +18,7 @@ const useStyles = makeStyles({
         maxWidth: 350
     },
     content: {
-        width: '100%'
+        width: '100%',
     },
     contentTop: {
         display: "flex",
@@ -32,8 +31,7 @@ export default function Dish(props) {
     const classes = useStyles();
 
     return (
-        <Card>
-            <CardActionArea className={classes.card}>
+        <Card className={classes.card} >
                 <CardMedia
                     className={classes.img}
                     component="img"
@@ -56,7 +54,6 @@ export default function Dish(props) {
                         Review: {dish.review}
                     </Typography>
                 </CardContent>
-            </CardActionArea>
         </Card>
     )
 }

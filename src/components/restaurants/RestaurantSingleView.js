@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import Dish from "../dishes/Dish";
 import {getRestaurants} from "../../store/restaurants/restaurantsActions";
 import {getDishes} from "../../store/dishes/dishesActions";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyle({
     root: {
@@ -55,16 +56,18 @@ const useStyles = makeStyle({
     },
 
     dishCard: {
-        width: '73%',
         margin: '30px auto',
-        '& .MuiPaper-elevation1':{
+        maxWidth: '75%',
+        minWidth: 375,
+        '& .MuiPaper-elevation1': {
             margin: 10,
             boxShadow: '0px 1px 7px 1px rgba(0,0,0,0.2), -1px 1px 0px 0px rgba(0,0,0,0.14), 0px 0px 0px -1px rgba(0,0,0,0.12)'
         }
     },
-    dishCardTitle:{
+    dishCardTitle: {
         textAlign: "center",
         marginBottom: 25,
+        marginTop: 25,
     }
 });
 
@@ -124,10 +127,15 @@ function RestaurantsDishes(props) {
     const classes = useStyles()
     const dishes = props.dishes.filter(item => item.restaurant_id === parseInt(props.restaurant_id))
     return (
-        <div className={classes.dishCard}>
-            <Typography variant={"h6"} className={classes.dishCardTitle}>{props.restaurant_name} dishes: </Typography>
-            {dishes.map(item => <Dish dish={item}/>)}
-        </div>
+        <>
+            <Typography variant={"h6"}
+                        className={classes.dishCardTitle}>
+                {props.restaurant_name} dishes:
+            </Typography>
+            <Grid container spacing={1} className={classes.dishCard}>
+                {dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish dish={item}/></Grid>)}
+            </Grid>
+        </>
     )
 }
 
