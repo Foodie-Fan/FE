@@ -9,16 +9,19 @@ import {
     SET_IMAGE,
     GET_USER_START,
     GET_USER_SUCCESS,
-    GET_USER_FAILURE, CLEAR_ERROR,
+    GET_USER_FAILURE, CLEAR_ERROR, GET_USERS_START, GET_USERS_SUCCESS, GET_USERS_FAILURE,
 } from "./types";
 
 const initialState = {
+    users: [],
     error: "",
     isLoading: false,
     isAuth: !!localStorage.getItem("token"),
     username: "",
     name: "",
     image: "",
+    restaurants: 0,
+    reviews: 0,
     file: {},
 };
 
@@ -98,6 +101,8 @@ const reducers = (state = initialState, action) => {
                 username: action.payload.username,
                 name: action.payload.name,
                 image: action.payload.avatar,
+                reviews: action.payload.reviews,
+                restaurants: action.payload.restaurants,
             };
         case GET_USER_FAILURE:
             return {
@@ -105,6 +110,26 @@ const reducers = (state = initialState, action) => {
                 error: action.payload,
                 isLoading: false,
             };
+
+        //    GET USERS
+        case GET_USERS_START:
+            return {
+                ...state,
+                isLoading: true,
+            };
+        case GET_USERS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                users: action.payload
+            };
+        case GET_USERS_FAILURE:
+            return {
+                ...state,
+                isLoading: false,
+                error: action.payload,
+            };
+
         default:
             return state;
     }

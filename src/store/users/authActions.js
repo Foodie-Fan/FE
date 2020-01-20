@@ -7,15 +7,22 @@ import {
     LOGOUT,
     REGISTER_START,
     REGISTER_SUCCESS,
-    REGISTER_FAILURE, GET_USER_START, GET_USER_SUCCESS, GET_USER_FAILURE, SET_IMAGE, CLEAR_ERROR,
+    REGISTER_FAILURE,
+    GET_USER_START,
+    GET_USER_SUCCESS,
+    GET_USER_FAILURE,
+    SET_IMAGE,
+    CLEAR_ERROR,
+    GET_USERS_START,
+    GET_USERS_SUCCESS, GET_USERS_FAILURE,
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
 
 //login action
-export const getUser = () => dispatch =>{
+export const getUser = () => dispatch => {
     dispatch({type: GET_USER_START});
     axiosWithAuth()
-        .get("http://localhost:5000/users/")
+        .get("/users/")
         .then(res => dispatch({type: GET_USER_SUCCESS, payload: res.data}))
         .catch(error => dispatch({type: GET_USER_FAILURE, payload: error}))
 };
@@ -24,7 +31,7 @@ export const login = (credentials, history) => {
     return dispatch => {
         dispatch({type: LOGIN_START});
         axios
-            .post("http://localhost:5000/auth/login", credentials)
+            .post("/auth/login", credentials)
             .then(res => {
                 dispatch({type: LOGIN_SUCCESS, payload: res.data});
                 localStorage.setItem("token", res.data);
@@ -48,7 +55,7 @@ export const logout = () => {
 export const register = (user, history) => dispatch => {
     dispatch({type: REGISTER_START});
     console.log('USER ', user);
-    axios.post("http://localhost:5000/auth/register", user)
+    axios.post("/auth/register", user)
         .then(res => {
             console.log('res ', res);
             dispatch({type: REGISTER_SUCCESS, payload: user});
@@ -67,4 +74,12 @@ export const clearError = () => dispatch => {
     dispatch({type: CLEAR_ERROR})
 };
 
+
+export const getUsers = () => dispatch => {
+    dispatch({type: GET_USERS_START});
+    axiosWithAuth()
+        .get('/users/all')
+        .then(res => dispatch({type: GET_USERS_SUCCESS, payload: res.data}))
+        .catch(err => dispatch({type: GET_USERS_FAILURE, payload: err}))
+};
 

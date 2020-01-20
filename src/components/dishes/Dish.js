@@ -3,32 +3,13 @@ import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import makeStyles from '@material-ui/core/styles/makeStyles'
 import Rating from "@material-ui/lab/Rating";
+import {useCardStyles} from './CardStyles'
 
-const useStyles = makeStyles({
-    card: {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "flex-start",
-    },
-    img: {
-        width: '15%',
-        minWidth: 130,
-        maxWidth: 350
-    },
-    content: {
-        width: '100%',
-    },
-    contentTop: {
-        display: "flex",
-        justifyContent: "space-between"
-    }
-});
 
 export default function Dish(props) {
     const {dish} = props;
-    const classes = useStyles();
+    const classes = useCardStyles();
 
     return (
         <Card className={classes.card} >

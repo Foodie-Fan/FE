@@ -33,8 +33,8 @@ function TabLinks() {
             <RouterLink to={'/dashboard/dishes'} className={classes.link} activeClassName={classes.active}>
                 <Typography variant={"subtitle1"}>DISHES</Typography>
             </RouterLink>
-            <RouterLink to={'/dashboard/settings'} className={classes.link} activeClassName={classes.active}>
-                <Typography variant={"subtitle1"}>SETTINGS</Typography>
+            <RouterLink to={'/dashboard/people'} className={classes.link} activeClassName={classes.active}>
+                <Typography variant={"subtitle1"}>PEOPLE</Typography>
             </RouterLink>
         </nav>
     )
