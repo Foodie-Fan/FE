@@ -5,13 +5,12 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 
 const useStyles = makeStyles(theme => ({
     profileContainer: {
-        borderBottom: "1.5px solid #EDEDED",
         display: 'flex',
     },
     avatar: {
-        margin: 10,
-        width: 150,
-        height: 150,
+        // margin: 10,
+        width: 120,
+        height: 120,
     },
     userInfo: {
         marginLeft: 50,
@@ -24,7 +23,8 @@ const useStyles = makeStyles(theme => ({
         color: '#535353'
     },
     info: {
-        marginTop: 30,
+        marginTop: 15,
+        marginBottom: 5,
         display: 'flex',
         [theme.breakpoints.up('sm')]: {
             justifyContent: "flex-end"

@@ -117,7 +117,7 @@ const DishFormikForm = withFormik({
             name: name || '',
             cuisine: cuisine || '',
             restaurant_id: restaurant_id || '',
-            price: price || '',
+            price: price || 0,
             rating: rating || 2,
             review: review || '',
             photo: photo || ''
@@ -139,6 +139,7 @@ const DishFormikForm = withFormik({
         fd.append('restaurant_id', values.restaurant_id);
         fd.append('rating', values.rating);
         fd.append('review', values.review);
+        fd.append('price', values.price);
         fd.append('photo', props.file);
         props.createDish(fd, props.history)
     }

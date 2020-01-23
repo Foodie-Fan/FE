@@ -32,6 +32,9 @@ export default function Dish(props) {
                         Restaurant: {dish.restaurant}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
+                        Price: {dish.price}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
                         Review: {dish.review}
                     </Typography>
                 </CardContent>

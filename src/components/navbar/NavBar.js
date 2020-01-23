@@ -51,7 +51,7 @@ const NavBar = props => {
     return (
         <div className={classes.root}>
             <AppBar className={classes.navBar}>
-                <Toolbar>
+                <Toolbar  variant="dense">
                     <Typography variant="h4" className={classes.title}>
                         <a href="https://build-week-foodie-fun.github.io/UI/"
                            className={classes.logoLink}>

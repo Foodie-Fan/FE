@@ -13,3 +13,7 @@ export const CREATE_DISH_SUCCESS = "CREATE_DISH_SUCCESS";
 export const CREATE_DISH_FAIL = "CREATE_DISH_FAIL";
 
 export const SET_IMAGE = "SET_IMAGE";
+
+
+//filtering
+export const FILTER_DISHES = 'FILTER_DISHES'
