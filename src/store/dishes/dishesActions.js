@@ -43,29 +43,16 @@ export const setImage = (file) => dispatch => {
     dispatch({type: SET_IMAGE, payload: file})
 };
 
-function fd(data, dishes) {
-    for (const item in data) {
-        const new_dishes = dishes.filter(dish => {
-            if (dish[item] === undefined || dish[item] !== data[item]) {
-                return false
-            }
-            return true
-        });
-        console.log("STEP1 ", new_dishes)
-        dishes = new_dishes;
-    }
-}
 
 export const filterDishes = (data) => (dispatch, getState) => {
     /*name: ""
-restaurant_name: ""
-location: ""
-rating: "2"
-cuisine: ""
-price: ""*/
+    restaurant_name: ""
+    location: ""
+    rating: "2"
+    cuisine: ""
+    price: ""*/
     let dishes = getState().dishes.dishes;
     for (const item in data) {
-        console.log(typeof data['rating'])
         if (data[item] !== "") {
             const new_dishes = dishes.filter(dish => {
                 if (dish[item] === undefined || String(dish[item]) !== String(data[item])) {
@@ -73,19 +60,8 @@ price: ""*/
                 }
                 return true
             });
-            console.log("STEP1 ", new_dishes)
             dishes = new_dishes;
         }
     }
-    // dishes = dishes.filter(dish => {
-    //     for (let item in data) {
-    //         console.log(dish[item] ,"  ||   ", item)
-    //         if (dish[item] === undefined || dish[item] !== data[item]) {
-    //             return false
-    //         }
-    //     }
-    //     return true
-    // });
-    console.log("di ", dishes)
     dispatch({type: FILTER_DISHES, payload: dishes})
-}
+};

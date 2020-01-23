@@ -6,6 +6,7 @@ import filters from './Filter.png'
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import {filterDishes} from "../../store/dishes/dishesActions";
+import {filterRestaurants} from "../../store/restaurants/restaurantsActions";
 
 const useFilterStyles = makeStyles(theme => ({
     root: {
@@ -136,12 +137,14 @@ const Filters = withFormik({
         }
     },
     handleSubmit(values, {props}) {
-        if(props.state){
+        if (props.state) {
             props.filterDishes(values)
+        } else if (!props.state) {
+            props.filterRestaurants(values)
         }
     }
 
 })(Filter);
 
 
-export default connect(null, {filterDishes})(Filters)
+export default connect(null, {filterDishes, filterRestaurants})(Filters)

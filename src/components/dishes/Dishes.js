@@ -10,11 +10,16 @@ import Filters from "../filter/Filter";
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
-        // background: 'white',
         paddingTop: 20,
         [theme.breakpoints.down('md')]: {
             flexDirection: 'column'
         }
+    },
+    content: {
+        background: "white",
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        padding: 5,
     },
     filters: {
         height: "100%",
@@ -57,7 +62,7 @@ function Dishes(props) {
             </div>
 
             {/*right side*/}
-            <Grid container spacing={1}>
+            <Grid container spacing={1} className={classes.content}>
                 {props.dishes.length > 0 && (
                     props.dishes.map((dish, index) => (
                         <Grid item xs={12} key={index}>

@@ -23,7 +23,8 @@ const useStyles = makeStyles({
         maxWidth: '1200px',
         minWidth: "400px",
         width: '100%',
-        margin: 'auto'
+        margin: 'auto',
+        paddingBottom: 100,
     },
 });
 
