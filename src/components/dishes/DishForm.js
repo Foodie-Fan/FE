@@ -46,7 +46,7 @@ function DishForm(props) {
 
     return (
         <div className={classes.root}>
-            <Button color={"secondary"} onClick={() => props.history.push('/dashboard/dishes/')}>Back</Button>
+            <Button color={"primary"} onClick={() => props.history.push('/dashboard/dishes/')}>Back</Button>
             {props.restaurants &&
             <Form className={classes.form}>
                 <Typography variant={"h5"} className={classes.title}>

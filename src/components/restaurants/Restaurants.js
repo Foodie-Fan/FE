@@ -7,6 +7,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import Button from "@material-ui/core/Button";
 import {withRouter} from "react-router-dom";
 import Filters from "../filter/Filter";
+import dish from './dish.jpg'
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -39,7 +41,15 @@ const useStyles = makeStyles(theme => ({
         border: '0.8px solid #e8e8e8',
         width: "100%",
         marginBottom: 20,
-    }
+    },
+    emptyImg: {
+        height: 250,
+        width: 'auto',
+    },
+    empty: {
+        margin: 'auto',
+        textAlign: 'center'
+    },
 }));
 
 function Restaurants(props) {
@@ -61,13 +71,19 @@ function Restaurants(props) {
                 </div>
             </div>
             <Grid container spacing={1} className={classes.content}>
-                {props.restaurants.length > 0 && (
-                    props.restaurants.map((restaurant, index) => (
-                        <Grid item xs={12} sm={4} md={3} key={index}>
-                            <Restaurant key={restaurant.id} restaurant={restaurant}/>
-                        </Grid>
-                    ))
-                )}
+                {props.restaurants.length > 0 ? (
+                        props.restaurants.map((restaurant, index) => (
+                            <Grid item xs={6} sm={4} md={3} key={index}>
+                                <Restaurant key={restaurant.id} restaurant={restaurant}/>
+                            </Grid>
+                        ))
+                    )
+                    :
+                    <div className={classes.empty}>
+                        <img src={dish} className={classes.emptyImg}/>
+                        <Typography style={{color: 'red'}} variant={"h6"}>You don`t have any restaurants yet</Typography>
+                    </div>
+                }
             </Grid>
         </div>
     )

@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button";
 import Dish from "./Dish";
 import {getDishes} from "../../store/dishes/dishesActions";
 import Filters from "../filter/Filter";
+import burger from './burgerIcon.jpg'
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -37,7 +39,15 @@ const useStyles = makeStyles(theme => ({
         border: '0.8px solid #e8e8e8',
         width: "100%",
         marginBottom: 20,
-    }
+    },
+    emptyImg: {
+        height: 250,
+        width: 'auto',
+    },
+    empty: {
+        margin: 'auto',
+        textAlign: 'center'
+    },
 }));
 
 function Dishes(props) {
@@ -63,13 +73,20 @@ function Dishes(props) {
 
             {/*right side*/}
             <Grid container spacing={1} className={classes.content}>
-                {props.dishes.length > 0 && (
+                {props.dishes.length > 0 ? (
                     props.dishes.map((dish, index) => (
                         <Grid item xs={12} key={index}>
                             <Dish dish={dish}/>
                         </Grid>
                     ))
-                )}
+                )
+                :
+                    <div  className={classes.empty}>
+                        <img src={burger} className={classes.emptyImg}/>
+                        <Typography style={{color: 'red'}} variant={"h6"}>You don`t have any dishes yet</Typography>
+                    </div>
+
+                }
             </Grid>
         </div>
     )

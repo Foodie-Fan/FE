@@ -11,6 +11,10 @@ import Dish from "../dishes/Dish";
 const useStyles = makeStyles({
     root: {
         background: 'white',
+        marginTop: 20,
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        padding: 20,
     },
     profileCard: {
         display: 'flex',

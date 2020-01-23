@@ -8,18 +8,13 @@ import {Link} from "react-router-dom";
 
 const useStyles = makeStyles({
     root: {
-        background: '#fff',
-
-        padding: 20
+        background: 'white',
+        marginTop: 20,
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        padding: 20,
     },
     card: {
-        // margin: '30px auto',
-        // width: '50%',
-        // minWidth: 375,
-        // '& .MuiPaper-elevation1': {
-        //     margin: 10,
-        //     boxShadow: '0px 1px 7px 1px rgba(0,0,0,0.2), -1px 1px 0px 0px rgba(0,0,0,0.14), 0px 0px 0px -1px rgba(0,0,0,0.12)'
-        // }
         margin: 0
     },
 });
