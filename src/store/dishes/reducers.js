@@ -4,13 +4,14 @@ import {
     GET_DISHES_FAIL,
     CREATE_DISH_START,
     CREATE_DISH_SUCCESS,
-    CREATE_DISH_FAIL
+    CREATE_DISH_FAIL, GET_PROFILE_REVIEWS_START, GET_PROFILE_REVIEWS_SUCCESS, GET_PROFILE_REVIEWS_FAILURE
 } from "./types";
 import {SET_IMAGE} from "../users/types";
 
 const initialState = {
     error: "",
     isLoading: false,
+    profileReviews: [],
     dishes: [],
     file: {},
 
@@ -38,6 +39,25 @@ const reducers = (state = initialState, {type, payload}) => {
                 error: payload,
                 isLoading: false,
             };
+
+        case GET_PROFILE_REVIEWS_START:
+            return {
+                ...state,
+                isLoading: true,
+            };
+        case GET_PROFILE_REVIEWS_SUCCESS:
+            return {
+                ...state,
+                isLoading: false,
+                profileReviews: payload,
+            };
+        case  GET_PROFILE_REVIEWS_FAILURE:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload
+            };
+
         case CREATE_DISH_START:
             return {
                 ...state,
@@ -45,7 +65,6 @@ const reducers = (state = initialState, {type, payload}) => {
                 isLoading: true,
             };
         case CREATE_DISH_SUCCESS:
-            console.log('create dish success step 2', payload);
             return {
                 ...state,
                 error: "",
@@ -60,7 +79,6 @@ const reducers = (state = initialState, {type, payload}) => {
             };
 
         case SET_IMAGE:
-            console.log('REDUCER IMAGE ', payload);
             return {
                 ...state,
                 file: payload,
