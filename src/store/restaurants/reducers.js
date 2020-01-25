@@ -85,6 +85,7 @@ const reducers = (state = initialState, {type, payload}) => {
                 ...state,
                 isLoading: false,
                 restaurants: deleteRes,
+                filteredRestaurants: deleteRes,
                 error: ''
             };
         case DELETE_RESTAURANT_FAILURE:
@@ -98,7 +99,7 @@ const reducers = (state = initialState, {type, payload}) => {
             return {
                 ...state,
                 filteredRestaurants: payload,
-            }
+            };
 
         default:
             return state;

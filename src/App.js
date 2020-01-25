@@ -45,7 +45,7 @@ const App = () => {
                         <PrivateRoute path="/dashboard" component={Dashboard}/>
 
                         {/* {default} */}
-                        <Redirect from="/" to="/dashboard"/>
+                        <Redirect from="/" to="/dashboard/restaurants"/>
                     </Switch>
                 </Router>
             </div>

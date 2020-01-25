@@ -17,3 +17,8 @@ export const SET_IMAGE = "SET_IMAGE";
 
 //filtering
 export const FILTER_DISHES = 'FILTER_DISHES'
+
+//delete
+export const DELETE_DISH_START = "DELETE_DISH_START"
+export const DELETE_DISH_SUCCESS = "DELETE_DISH_SUCCESS"
+export const DELETE_DISH_FAILURE = "DELETE_DISH_FAILURE"
