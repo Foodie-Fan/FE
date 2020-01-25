@@ -10,6 +10,9 @@ import Dish from "../dishes/Dish";
 import {getRestaurants} from "../../store/restaurants/restaurantsActions";
 import {getDishes} from "../../store/dishes/dishesActions";
 import Grid from "@material-ui/core/Grid";
+import {Edit} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyle({
     root: {
@@ -92,7 +95,10 @@ function RestaurantSingleView(props) {
                             onClick={() => props.history.push('/dashboard/restaurants/')}>Back</Button>
                     <div className={classes.top}>
                         {/*<Button color={"primary"} className={classes.btn}>Create a review</Button>*/}
-                        <Rating name="read-only" value={restaurant.rating} readOnly/>
+                        <Rating name="read-only" value={restaurant.rating} readOnly style={{paddingRight: 30}}/>
+                        <IconButton onClick={() => props.history.push(`/dashboard/restaurants/edit-restaurant/${id}`)}>
+                            <Edit/>
+                        </IconButton>
                     </div>
                 </div>
                 <div className={classes.card}>
