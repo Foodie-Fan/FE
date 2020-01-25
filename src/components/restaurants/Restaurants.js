@@ -6,20 +6,50 @@ import Restaurant from "./Restaurant";
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Button from "@material-ui/core/Button";
 import {withRouter} from "react-router-dom";
+import Filters from "../filter/Filter";
+import dish from './dish.jpg'
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => ({
     root: {
         display: "flex",
-        background: 'white',
-        padding: 20,
+        paddingTop: 20,
         [theme.breakpoints.down('md')]: {
             flexDirection: 'column'
         }
     },
-    filter: {
+    content: {
+        background: "white",
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        padding: 5,
+    },
+
+    filters: {
         height: "100%",
-        width: "25%",
-    }
+        width: "30%",
+        marginTop: 0,
+        marginRight: 20,
+        [theme.breakpoints.down('md')]: {
+            width: "80%",
+            margin: '0 auto',
+        }
+    },
+    filter: {
+        background: "white",
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        width: "100%",
+        marginBottom: 20,
+    },
+    emptyImg: {
+        height: 250,
+        width: 'auto',
+    },
+    empty: {
+        margin: 'auto',
+        textAlign: 'center'
+    },
 }));
 
 function Restaurants(props) {
@@ -31,19 +61,29 @@ function Restaurants(props) {
 
     return (
         <div className={classes.root}>
-            <div className={classes.filter}>
-                <Button color={"primary"}
+            <div className={classes.filters}>
+                <Button className={classes.filter} color={"primary"}
                         onClick={() => props.history.push("/dashboard/restaurants/create-restaurant")}>Create
-                    restaurant</Button>
+                    restaurant
+                </Button>
+                <div className={classes.filter}>
+                    <Filters state={false}/>
+                </div>
             </div>
-            <Grid container spacing={1}>
-                {props.restaurants.length > 0 && (
-                    props.restaurants.map((restaurant, index) => (
-                        <Grid item xs={12} sm={4} md={3} key={index}>
-                            <Restaurant key={restaurant.id} restaurant={restaurant}/>
-                        </Grid>
-                    ))
-                )}
+            <Grid container spacing={1} className={classes.content}>
+                {props.restaurants.length > 0 ? (
+                        props.restaurants.map((restaurant, index) => (
+                            <Grid item xs={6} sm={4} md={3} key={index}>
+                                <Restaurant key={restaurant.id} restaurant={restaurant}/>
+                            </Grid>
+                        ))
+                    )
+                    :
+                    <div className={classes.empty}>
+                        <img src={dish} className={classes.emptyImg}/>
+                        <Typography style={{color: 'red'}} variant={"h6"}>You don`t have any restaurants yet</Typography>
+                    </div>
+                }
             </Grid>
         </div>
     )
@@ -53,7 +93,7 @@ const mapStateToProps = state => {
     return {
         isLoading: state.restaurants.isLoading,
         error: state.restaurants.error,
-        restaurants: state.restaurants.restaurants
+        restaurants: state.restaurants.filteredRestaurants
     }
 };
 

@@ -5,9 +5,14 @@ import {
     SET_IMAGE,
     CREATE_RESTAURANT_START,
     CREATE_RESTAURANT_SUCCESS,
-    CREATE_RESTAURANT_FAIL, DELETE_RESTAURANT_START, DELETE_RESTAURANT_SUCCESS, DELETE_RESTAURANT_FAILURE
+    CREATE_RESTAURANT_FAIL,
+    DELETE_RESTAURANT_START,
+    DELETE_RESTAURANT_SUCCESS,
+    DELETE_RESTAURANT_FAILURE,
+    FILTER_RESTAURANTS
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
+import {FILTER_DISHES} from "../dishes/types";
 
 export const getRestaurants = () => dispatch => {
     dispatch({type: GET_RESTAURANT_START});
@@ -40,4 +45,26 @@ export const deleteRestaurant = (id) => dispatch => {
         .delete(`/restaurants/${id}`)
         .then(res => dispatch({type: DELETE_RESTAURANT_SUCCESS, payload: id}))
         .catch(err => dispatch({type: DELETE_RESTAURANT_FAILURE, payload: err}))
-}
+};
+
+
+export const filterRestaurants = (data) => (dispatch, getState) => {
+    /*name: ""
+    location: ""
+    rating: "2"
+    cuisine: ""
+    */
+    let restaurants = getState().restaurants.restaurants;
+    for (const item in data) {
+        if (data[item] !== "") {
+            const new_restaurants = restaurants.filter(res => {
+                if (res[item] === undefined || String(res[item]) !== String(data[item])) {
+                    return false
+                }
+                return true
+            });
+            restaurants = new_restaurants;
+        }
+    }
+    dispatch({type: FILTER_RESTAURANTS, payload: restaurants})
+};

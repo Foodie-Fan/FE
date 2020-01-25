@@ -9,8 +9,9 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "space-around",
         alignItems: "center",
         height: '60px',
-        borderBottom: "1.5px solid #EDEDED",
+        border: "1px solid #dbdbdb",
         background: 'white',
+        borderRadius: 10,
     },
     active: {
         color: '#D80000'

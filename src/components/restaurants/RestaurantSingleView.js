@@ -14,9 +14,10 @@ import Grid from "@material-ui/core/Grid";
 const useStyles = makeStyle({
     root: {
         background: 'white',
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 20,
+        marginTop: 20,
+        borderRadius: 4,
+        border: '0.8px solid #e8e8e8',
+        padding: 20,
     },
     card: {
         display: "flex",
@@ -87,10 +88,10 @@ function RestaurantSingleView(props) {
             {restaurant &&
             <>
                 <div className={classes.top}>
-                    <Button color={"secondary"}
+                    <Button color={"primary"}
                             onClick={() => props.history.push('/dashboard/restaurants/')}>Back</Button>
                     <div className={classes.top}>
-                        <Button color={"primary"} className={classes.btn}>Create a review</Button>
+                        {/*<Button color={"primary"} className={classes.btn}>Create a review</Button>*/}
                         <Rating name="read-only" value={restaurant.rating} readOnly/>
                     </div>
                 </div>

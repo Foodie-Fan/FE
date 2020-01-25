@@ -23,7 +23,8 @@ const useStyles = makeStyles({
         maxWidth: '1200px',
         minWidth: "400px",
         width: '100%',
-        margin: 'auto'
+        margin: 'auto',
+        paddingBottom: 100,
     },
 });
 
@@ -44,7 +45,7 @@ const App = () => {
                         <PrivateRoute path="/dashboard" component={Dashboard}/>
 
                         {/* {default} */}
-                        <Redirect from="/" to="/dashboard"/>
+                        <Redirect from="/" to="/dashboard/restaurants"/>
                     </Switch>
                 </Router>
             </div>

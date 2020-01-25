@@ -4,7 +4,11 @@ import {
     GET_RESTAURANT_FAIL,
     CREATE_RESTAURANT_START,
     CREATE_RESTAURANT_SUCCESS,
-    CREATE_RESTAURANT_FAIL, DELETE_RESTAURANT_SUCCESS, DELETE_RESTAURANT_START, DELETE_RESTAURANT_FAILURE
+    CREATE_RESTAURANT_FAIL,
+    DELETE_RESTAURANT_SUCCESS,
+    DELETE_RESTAURANT_START,
+    DELETE_RESTAURANT_FAILURE,
+    FILTER_RESTAURANTS
 } from "./types";
 
 import {SET_IMAGE} from "../users/types";
@@ -14,7 +18,7 @@ const initialState = {
     isLoading: false,
     restaurants: [],
     file: {},
-
+    filteredRestaurants: []
 };
 
 const reducers = (state = initialState, {type, payload}) => {
@@ -32,6 +36,7 @@ const reducers = (state = initialState, {type, payload}) => {
                 error: "",
                 isLoading: false,
                 restaurants: payload,
+                filteredRestaurants: payload,
             };
         case  GET_RESTAURANT_FAIL:
             return {
@@ -80,6 +85,7 @@ const reducers = (state = initialState, {type, payload}) => {
                 ...state,
                 isLoading: false,
                 restaurants: deleteRes,
+                filteredRestaurants: deleteRes,
                 error: ''
             };
         case DELETE_RESTAURANT_FAILURE:
@@ -87,6 +93,12 @@ const reducers = (state = initialState, {type, payload}) => {
                 ...state,
                 isLoading: false,
                 error: payload
+            };
+
+        case FILTER_RESTAURANTS:
+            return {
+                ...state,
+                filteredRestaurants: payload,
             };
 
         default:

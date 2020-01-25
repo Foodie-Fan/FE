@@ -12,10 +12,14 @@ export const useCardStyles = makeStyles({
         maxWidth: 350
     },
     content: {
+        position: 'relative',
         width: '100%',
     },
     contentTop: {
         display: "flex",
         justifyContent: "space-between"
+    },
+    deleteIcon: {
+
     }
 });

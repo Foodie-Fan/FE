@@ -13,7 +13,7 @@ import reducers from './store/index';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {createMuiTheme, responsiveFontSizes, MuiThemeProvider} from '@material-ui/core/styles';
 
-const store = createStore(reducers, applyMiddleware(thunk));
+export const store = createStore(reducers, applyMiddleware(thunk));
 
 let theme = createMuiTheme({
     palette: {

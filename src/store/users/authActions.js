@@ -31,7 +31,7 @@ export const login = (credentials, history) => {
     return dispatch => {
         dispatch({type: LOGIN_START});
         axios
-            .post("/auth/login", credentials)
+            .post("http://localhost:5000/auth/login", credentials)
             .then(res => {
                 dispatch({type: LOGIN_SUCCESS, payload: res.data});
                 localStorage.setItem("token", res.data);
@@ -55,7 +55,7 @@ export const logout = () => {
 export const register = (user, history) => dispatch => {
     dispatch({type: REGISTER_START});
     console.log('USER ', user);
-    axios.post("/auth/register", user)
+    axios.post("http://localhost:5000/auth/register", user)
         .then(res => {
             console.log('res ', res);
             dispatch({type: REGISTER_SUCCESS, payload: user});

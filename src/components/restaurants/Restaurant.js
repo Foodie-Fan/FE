@@ -29,7 +29,7 @@ function Restaurant(props) {
     const deleteRestaurant = () => {
         props.deleteRestaurant(restaurant.id);
         setDialog(false);
-    }
+    };
 
     return (
         <Card style={{position: 'relative'}}>
