@@ -9,10 +9,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {DeleteForever} from "@material-ui/icons";
+import {DeleteForever, Edit} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import {connect} from "react-redux";
 import {deleteDish} from "../../store/dishes/dishesActions";
+import {withRouter} from "react-router-dom";
 
 
 function Dish(props) {
@@ -62,11 +63,16 @@ function Dish(props) {
                     <DeleteForever/>
                 </IconButton>
 
+                <IconButton onClick={() => props.history.push(`/dashboard/dishes/edit-review/${dish.id}`)}
+                            style={{position: "absolute", right: 40, top: 0, zIndex: 2}}>
+                    <Edit/>
+                </IconButton>
+
                 <div className={classes.contentTop}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {dish.name}
                     </Typography>
-                    <Rating name="read-only" value={dish.rating} readOnly style={{paddingRight: 50}}/>
+                    <Rating name="read-only" value={dish.rating} readOnly style={{paddingRight: 80}}/>
                 </div>
                 <Typography variant="body2" color="textSecondary" component="p">
                     Cuisine: {dish.cuisine}
@@ -85,4 +91,4 @@ function Dish(props) {
     )
 }
 
-export default connect(null, {deleteDish})(Dish)
+export default connect(null, {deleteDish})(withRouter(Dish))
