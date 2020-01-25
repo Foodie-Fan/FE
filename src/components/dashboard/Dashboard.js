@@ -30,6 +30,7 @@ function Dashboard(props) {
             <Route path={"/dashboard/restaurants/single/:id"} component={RestaurantSingleView}/>
             <Route exact path={"/dashboard/restaurants"} component={Restaurants}/>
             <Route path={"/dashboard/restaurants/create-restaurant"} component={RestaurantForm}/>
+            <Route path={"/dashboard/restaurants/edit-restaurant/:id"} render={props => <RestaurantForm {...props} state={true} />}/>
 
             <Route exact path={"/dashboard/dishes"} component={Dishes}/>
             <Route path={"/dashboard/dishes/create-review"} component={DishForm}/>
