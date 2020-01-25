@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
-import {createDish, getDishes, setImage} from "../../store/dishes/dishesActions";
+import {createDish, getDishes, setImage, updateReview} from "../../store/dishes/dishesActions";
 import Rating from "@material-ui/lab/Rating";
 import SearchField from "../search/Search";
 import {getRestaurants} from "../../store/restaurants/restaurantsActions";
@@ -163,6 +163,7 @@ const DishFormikForm = withFormik({
             if (props.file instanceof File) {
                 fd.append('photo', props.file);
             }
+            props.updateReview(props.match.params.id, fd, props.history)
         } else {
             const fd = new FormData();
             fd.append('name', values.name);
@@ -186,4 +187,4 @@ const mapPropsToState = state => {
     }
 };
 
-export default connect(mapPropsToState, {getRestaurants, createDish, setImage, getDishes})(DishFormikForm)
+export default connect(mapPropsToState, {getRestaurants, createDish, setImage, getDishes, updateReview})(DishFormikForm)
