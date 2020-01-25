@@ -14,10 +14,26 @@ import IconButton from "@material-ui/core/IconButton";
 import {connect} from "react-redux";
 import {deleteDish} from "../../store/dishes/dishesActions";
 import {withRouter} from "react-router-dom";
+import makeStyles from '@material-ui/core/styles/makeStyles'
+
+const useStyles = makeStyles(theme => ({
+    icon: {
+        color: '#a5a1a4',
+        '& :hover': {
+            color: '#6d6b69'
+        }
+    },
+    rating: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'none'
+        }
+    }
+}));
 
 
 function Dish(props) {
     const {dish} = props;
+    const styles = useStyles();
     const classes = useCardStyles();
     const [dialog, setDialog] = useState(false);
 
@@ -59,20 +75,21 @@ function Dish(props) {
             <CardContent className={classes.content}>
 
                 <IconButton onClick={handleClickOpen}
-                            style={{position: "absolute", right: 0, top: 0, zIndex: 2}}>
-                    <DeleteForever/>
+                            style={{position: "absolute", right: 10, top: 2, zIndex: 2}}>
+                    <DeleteForever className={styles.icon}/>
                 </IconButton>
 
                 <IconButton onClick={() => props.history.push(`/dashboard/dishes/edit-review/${dish.id}`)}
-                            style={{position: "absolute", right: 40, top: 0, zIndex: 2}}>
-                    <Edit/>
+                            style={{position: "absolute", right: 45, top: 2, zIndex: 2}}>
+                    <Edit className={styles.icon}/>
                 </IconButton>
 
                 <div className={classes.contentTop}>
                     <Typography gutterBottom variant="h5" component="h2">
                         {dish.name}
                     </Typography>
-                    <Rating name="read-only" value={dish.rating} readOnly style={{paddingRight: 80}}/>
+                    <Rating name="read-only" value={dish.rating} readOnly style={{paddingRight: 80}}
+                            className={styles.rating}/>
                 </div>
                 <Typography variant="body2" color="textSecondary" component="p">
                     Cuisine: {dish.cuisine}
