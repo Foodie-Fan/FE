@@ -74,15 +74,19 @@ function Dish(props) {
             />
             <CardContent className={classes.content}>
 
-                <IconButton onClick={handleClickOpen}
-                            style={{position: "absolute", right: 10, top: 2, zIndex: 2}}>
-                    <DeleteForever className={styles.icon}/>
-                </IconButton>
+                {props.state &&
+                <>
+                    <IconButton onClick={handleClickOpen}
+                                style={{position: "absolute", right: 10, top: 2, zIndex: 2}}>
+                        <DeleteForever className={styles.icon}/>
+                    </IconButton>
 
-                <IconButton onClick={() => props.history.push(`/dashboard/dishes/edit-review/${dish.id}`)}
-                            style={{position: "absolute", right: 45, top: 2, zIndex: 2}}>
-                    <Edit className={styles.icon}/>
-                </IconButton>
+                    <IconButton onClick={() => props.history.push(`/dashboard/dishes/edit-review/${dish.id}`)}
+                                style={{position: "absolute", right: 45, top: 2, zIndex: 2}}>
+                        <Edit className={styles.icon}/>
+                    </IconButton>
+                </>
+                }
 
                 <div className={classes.contentTop}>
                     <Typography gutterBottom variant="h5" component="h2">

@@ -7,6 +7,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import {getProfileReviews} from "../../store/dishes/dishesActions";
 import Grid from "@material-ui/core/Grid";
 import Dish from "../dishes/Dish";
+import network from './network.jpg'
 
 const useStyles = makeStyles({
     root: {
@@ -38,8 +39,16 @@ const useStyles = makeStyles({
             boxShadow: '0px 1px 7px 1px rgba(0,0,0,0.2), -1px 1px 0px 0px rgba(0,0,0,0.14), 0px 0px 0px -1px rgba(0,0,0,0.12)'
         }
     },
+    emptyImg: {
+        height: 100,
+        width: 'auto',
+    },
+    empty: {
+        marginTop: 20,
+        margin: 'auto',
+        textAlign: 'center'
+    },
 });
-
 
 function ProfilePage(props) {
     const classes = useStyles();
@@ -59,9 +68,17 @@ function ProfilePage(props) {
                     <Avatar src={user.avatar} className={classes.avatar}/>
                     <Typography variant={"h5"}>{user.name}</Typography>
                 </div>
-                <Grid container spacing={1} className={classes.dishCard}>
-                    {props.dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish dish={item}/></Grid>)}
-                </Grid>
+                {props.dishes.length > 0 ?
+                    <Grid container spacing={1} className={classes.dishCard}>
+                        {props.dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish state={false}
+                                                                                                 dish={item}/></Grid>)}
+                    </Grid>
+                    :
+                    <div className={classes.empty}>
+                        <img src={network} className={classes.emptyImg}/>
+                        <Typography style={{color: 'red'}} variant={"h6"}>{user.name} does not have any reviews yet</Typography>
+                    </div>
+                }
             </div>
             }
         </>
