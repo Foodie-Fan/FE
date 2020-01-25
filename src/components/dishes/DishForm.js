@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
-import {createDish, setImage} from "../../store/dishes/dishesActions";
+import {createDish, getDishes, setImage} from "../../store/dishes/dishesActions";
 import Rating from "@material-ui/lab/Rating";
 import SearchField from "../search/Search";
 import {getRestaurants} from "../../store/restaurants/restaurantsActions";
@@ -19,18 +19,36 @@ function DishForm(props) {
     const [restaurant, setR] = React.useState("");
 
     const setRestaurant = (val) => {
-        if (props.restaurants.length > 0){
-            const restaurant = props.restaurants.find(item => item.name === val)
-            if(restaurant){
+        if (props.restaurants.length > 0) {
+            const restaurant = props.restaurants.find(item => item.name === val);
+            if (restaurant) {
                 props.setFieldValue('restaurant_id', restaurant.id)
             }
             setR(val)
         }
-    }
+    };
 
     useEffect(() => {
-        props.getRestaurants()
-    }, [])
+        props.getRestaurants();
+        props.getDishes()
+    }, []);
+
+    const id = props.match.params.id;
+    const dish = props.dishes.length > 0 ? props.dishes.find(item => item.id === parseInt(id)) : [];
+
+
+    useEffect(() => {
+        if (props.state) {
+            props.setFieldValue('name', dish.name);
+            props.setFieldValue('cuisine', dish.cuisine);
+            props.setFieldValue('restaurant_id', dish.restaurant_id);
+            setR(dish.restaurant);
+            props.setFieldValue('price', dish.price);
+            props.setFieldValue('rating', dish.rating);
+            setValue(dish.rating);
+            props.setFieldValue('review', dish.review);
+        }
+    }, [props.dishes]);
 
     const setFile = (img) => {
         props.setImage(img)
@@ -51,7 +69,7 @@ function DishForm(props) {
             <Form className={classes.form}>
                 <Typography variant={"h5"} className={classes.title}>
                     <Box textAlign={"center"}>
-                        Create a review
+                        {props.state ? 'Edit review' : 'Create a review'}
                     </Box>
                 </Typography>
 
@@ -133,15 +151,29 @@ const DishFormikForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
-        const fd = new FormData();
-        fd.append('name', values.name);
-        fd.append('cuisine', values.cuisine);
-        fd.append('restaurant_id', values.restaurant_id);
-        fd.append('rating', values.rating);
-        fd.append('review', values.review);
-        fd.append('price', values.price);
-        fd.append('photo', props.file);
-        props.createDish(fd, props.history)
+        if (props.state) {
+            console.log('VALUES ', values);
+            const fd = new FormData();
+            fd.append('name', values.name);
+            fd.append('cuisine', values.cuisine);
+            fd.append('restaurant_id', values.restaurant_id);
+            fd.append('rating', values.rating);
+            fd.append('review', values.review);
+            fd.append('price', values.price);
+            if (props.file instanceof File) {
+                fd.append('photo', props.file);
+            }
+        } else {
+            const fd = new FormData();
+            fd.append('name', values.name);
+            fd.append('cuisine', values.cuisine);
+            fd.append('restaurant_id', values.restaurant_id);
+            fd.append('rating', values.rating);
+            fd.append('review', values.review);
+            fd.append('price', values.price);
+            fd.append('photo', props.file);
+            props.createDish(fd, props.history)
+        }
     }
 
 })(DishForm);
@@ -149,8 +181,9 @@ const DishFormikForm = withFormik({
 const mapPropsToState = state => {
     return {
         file: state.dishes.file,
-        restaurants: state.restaurants.restaurants
+        restaurants: state.restaurants.restaurants,
+        dishes: state.dishes.dishes,
     }
 };
 
-export default connect(mapPropsToState, {getRestaurants, createDish, setImage})(DishFormikForm)
+export default connect(mapPropsToState, {getRestaurants, createDish, setImage, getDishes})(DishFormikForm)
