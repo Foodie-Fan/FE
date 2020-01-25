@@ -76,7 +76,7 @@ function Dishes(props) {
                 {props.dishes.length > 0 ? (
                     props.dishes.map((dish, index) => (
                         <Grid item xs={12} key={index}>
-                            <Dish dish={dish}/>
+                            <Dish state={true} dish={dish}/>
                         </Grid>
                     ))
                 )

@@ -34,9 +34,11 @@ function Dashboard(props) {
 
             <Route exact path={"/dashboard/dishes"} component={Dishes}/>
             <Route path={"/dashboard/dishes/create-review"} component={DishForm}/>
+            <Route path={"/dashboard/dishes/edit-review/:id"} render={props => <DishForm {...props} state={true} />}/>
 
             <Route path={'/dashboard/profile/:id'} component={ProfilePage}/>
             <Route exact path={'/dashboard/people'} component={Users}/>
+
             {/*<IconLabelTabs/>*/}
         </>
     )

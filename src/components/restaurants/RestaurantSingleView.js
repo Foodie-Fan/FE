@@ -140,7 +140,7 @@ function RestaurantsDishes(props) {
                 {props.restaurant_name} dishes:
             </Typography>
             <Grid container spacing={1} className={classes.dishCard}>
-                {dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish dish={item}/></Grid>)}
+                {dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish state={true} dish={item}/></Grid>)}
             </Grid>
         </>
     )

@@ -10,7 +10,12 @@ import {
     GET_PROFILE_REVIEWS_SUCCESS,
     GET_PROFILE_REVIEWS_FAILURE,
     FILTER_DISHES,
-    DELETE_DISH_START, DELETE_DISH_SUCCESS, DELETE_DISH_FAILURE
+    DELETE_DISH_START,
+    DELETE_DISH_SUCCESS,
+    DELETE_DISH_FAILURE,
+    UPDATE_REVIEW_START,
+    UPDATE_REVIEW_SUCCESS,
+    UPDATE_REVIEW_FAILURE
 } from "./types";
 import {axiosWithAuth} from "../../utils/axiosWithAuth";
 
@@ -76,4 +81,16 @@ export const filterDishes = (data) => (dispatch, getState) => {
         }
     }
     dispatch({type: FILTER_DISHES, payload: dishes})
+};
+
+
+export const updateReview = (id, changes, history) => dishpatch => {
+    dishpatch({type: UPDATE_REVIEW_START});
+    axiosWithAuth()
+        .put(`/reviews/${id}`, changes)
+        .then(res => {
+            dishpatch({type: UPDATE_REVIEW_SUCCESS, payload: res});
+            history.push(`/dashboard/dishes/`)
+        })
+        .catch(error => dispatchEvent({type: UPDATE_REVIEW_FAILURE, payload: error}))
 };
