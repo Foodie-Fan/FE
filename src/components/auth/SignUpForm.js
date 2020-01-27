@@ -12,6 +12,7 @@ import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import Toast from "../toasts/Toast";
 import warning from "react-redux/es/utils/warning";
 import Collapse from "@material-ui/core/Collapse";
+import Loader from "../styles/Loader";
 
 const SignUpForm = ({errors, touched, ...props}) => {
     const classes = useStyles();
@@ -91,7 +92,7 @@ const SignUpForm = ({errors, touched, ...props}) => {
 
                 <ImgDropAndCrop setImage={setFile}/>
 
-                <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
+                <button className={classes.submitBtn} type="submit">{props.isLoading ? <Loader /> : "Submit "}</button>
             </Form>
             <div className={classes.note}>
                 <p className={classes.noteText}>Don't have an account yet?<Link to="/login"> Login</Link> here.</p>
@@ -122,7 +123,6 @@ const FormikSignUpForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
-        console.log('avatar ', props.file);
         const fd = new FormData();
         fd.append('name', values.name);
         fd.append('username', values.username);

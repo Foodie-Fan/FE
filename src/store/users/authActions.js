@@ -31,15 +31,14 @@ export const login = (credentials, history) => {
     return dispatch => {
         dispatch({type: LOGIN_START});
         axios
-            .post("http://localhost:5000/auth/login", credentials)
+            .post("https://foodie-fan.herokuapp.com/auth/login", credentials)
             .then(res => {
                 dispatch({type: LOGIN_SUCCESS, payload: res.data});
                 localStorage.setItem("token", res.data);
                 history.push("/");
             })
             .catch(err => {
-                dispatch({type: LOGIN_FAIL, payload: err.response});
-                console.log('authFailure', err.response);
+                dispatch({type: LOGIN_FAIL, payload: err.response.data.errorMessage});
             });
     };
 };
@@ -55,7 +54,7 @@ export const logout = () => {
 export const register = (user, history) => dispatch => {
     dispatch({type: REGISTER_START});
     console.log('USER ', user);
-    axios.post("http://localhost:5000/auth/register", user)
+    axios.post("https://foodie-fan.herokuapp.com/auth/register", user)
         .then(res => {
             console.log('res ', res);
             dispatch({type: REGISTER_SUCCESS, payload: user});

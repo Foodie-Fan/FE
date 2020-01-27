@@ -5,7 +5,7 @@ export const axiosWithAuth = () => {
     const token = localStorage.getItem("token");
 
     return axios.create({
-        baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000",
+        baseURL: "https://foodie-fan.herokuapp.com",
         headers: {
             "Content-Type": "application/json",
             Authorization: token

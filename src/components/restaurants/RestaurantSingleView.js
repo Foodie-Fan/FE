@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import {Edit} from "@material-ui/icons";
 import IconButton from "@material-ui/core/IconButton";
 import Card from "@material-ui/core/Card";
+import burger from "../dishes/burgerIcon.jpg";
 
 const useStyles = makeStyle({
     root: {
@@ -72,7 +73,15 @@ const useStyles = makeStyle({
         textAlign: "center",
         marginBottom: 25,
         marginTop: 25,
-    }
+    },
+    emptyImg: {
+        height: 250,
+        width: 'auto',
+    },
+    empty: {
+        margin: 'auto',
+        textAlign: 'center'
+    },
 });
 
 function RestaurantSingleView(props) {
@@ -139,9 +148,20 @@ function RestaurantsDishes(props) {
                         className={classes.dishCardTitle}>
                 {props.restaurant_name} dishes:
             </Typography>
-            <Grid container spacing={1} className={classes.dishCard}>
-                {dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish state={true} dish={item}/></Grid>)}
-            </Grid>
+            {dishes.length > 0 ?
+                <Grid container spacing={1} className={classes.dishCard}>
+                    {dishes.map((item, index) => <Grid item xs={12} key={index}> <Dish state={true}
+                                                                                       dish={item}/></Grid>)}
+                </Grid>
+                :
+                <div className={classes.empty}>
+                    <img src={burger} className={classes.emptyImg}/>
+                    <Typography style={{color: 'red'}} variant={"h6"}>
+                        {props.restaurant_name} does not have any dishes yet
+                    </Typography>
+                </div>
+            }
+
         </>
     )
 }

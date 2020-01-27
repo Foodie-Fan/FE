@@ -8,12 +8,16 @@ import useStyles from './styleForm'
 import Lock from '@material-ui/icons/Lock'
 import Identity from '@material-ui/icons/PermIdentity'
 import Typography from "@material-ui/core/Typography";
+import Loader from "../styles/Loader";
+import Toast from "../toasts/Toast";
 
 const Login = ({errors, touched, ...props}) => {
     const classes = useStyles();
     return (
         <div className={classes.formBorder}>
             <Typography className={classes.title} variant="h5">LOGIN</Typography>
+            {props.userError && props.userError.length > 0 && <Toast variant={"warning"} message={props.userError} state={true}/>}
+
             <Form className={classes.formContainer}>
                 <div className={classes.iconArea}>
                     <div className={classes.icon}>
@@ -35,7 +39,7 @@ const Login = ({errors, touched, ...props}) => {
                     <p className={classes.error}>{errors.password}</p>
                 )}
 
-                <button type="submit" className={classes.submitBtn}>{props.isLoading ? "..." : "Login "}</button>
+                <button type="submit" className={classes.submitBtn}>{props.isLoading ? <Loader /> : "Login "}</button>
 
             </Form>
             <div className={classes.note}>
@@ -67,7 +71,7 @@ const FormikLoginForm = withFormik({
 const mapStateToProps = state => {
     return {
         isLoading: state.users.isLoading,
-        error: state.users.error,
+        userError: state.users.error,
     }
 };
 

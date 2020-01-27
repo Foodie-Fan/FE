@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     rating: {
+        paddingRight: 80,
         [theme.breakpoints.down('xs')]: {
             display: 'none'
         }
@@ -92,8 +93,8 @@ function Dish(props) {
                     <Typography gutterBottom variant="h5" component="h2">
                         {dish.name}
                     </Typography>
-                    <Rating name="read-only" value={dish.rating} readOnly style={{paddingRight: 80}}
-                            className={styles.rating}/>
+                    <Rating name="read-only" value={dish.rating} readOnly
+                            className={props.state && `${styles.rating}`}/>
                 </div>
                 <Typography variant="body2" color="textSecondary" component="p">
                     Cuisine: {dish.cuisine}

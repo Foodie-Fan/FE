@@ -47,6 +47,7 @@ const reducers = (state = initialState, action) => {
                 isAuth: true,
             };
         case LOGIN_FAIL:
+            console.log("RESUCER ", action.payload);
             return {
                 ...state,
                 error: action.payload,
