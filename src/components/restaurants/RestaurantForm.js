@@ -9,13 +9,14 @@ import ImgDropAndCrop from "../dropzone/ImgDropAndCrop";
 import {connect} from "react-redux";
 import {createRestaurant, getRestaurants, setImage, updateRestaurant} from "../../store/restaurants/restaurantsActions";
 import Rating from "@material-ui/lab/Rating";
+import Loader from "../styles/Loader";
 
 function RestaurantForm(props) {
-    const classes = useFormStyles();
+    const classes = useFormStyles(props.isLoading);
     const [value, setValue] = React.useState(2);
 
     useEffect(() => {
-        if(props.state){
+        if (props.state) {
             props.getRestaurants();
         }
     }, []);
@@ -24,7 +25,7 @@ function RestaurantForm(props) {
     const restaurant = props.restaurants.length > 0 ? props.restaurants.find(item => item.id === parseInt(id)) : [];
 
     useEffect(() => {
-        if (props.state){
+        if (props.state) {
             props.setFieldValue('name', restaurant.name);
             props.setFieldValue('cuisine', restaurant.cuisine);
             props.setFieldValue('loca', restaurant.location);
@@ -57,10 +58,13 @@ function RestaurantForm(props) {
                         {props.state ? 'Edit restaurant' : 'Create restaurant'}
                     </Box>
                 </Typography>
-                <label className={`${classes.label} ${defineLabelError('name')}`}>
+                {props.error === "Restaurant name should be unique" &&
+                <Typography className={classes.errorMessage}>Restaurant name should be unique*</Typography>
+                }
+                <label className={`${classes.label} ${defineLabelError('name')} ${props.error === "Restaurant name should be unique" && classes.errorLabel}`}>
                     Restaurant name*
                     <Field type="text" name="name" placeholder="Restaurant name"
-                           className={`${classes.input} ${defineError('name')}`}/>
+                           className={`${classes.input} ${defineError('name')}  ${props.error === "Restaurant name should be unique" && classes.errorField}`}/>
                 </label>
 
                 <label className={`${classes.label} ${defineLabelError('cuisine')}`}>
@@ -99,7 +103,7 @@ function RestaurantForm(props) {
 
                 <ImgDropAndCrop setImage={setFile}/>
 
-                <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
+                <button className={classes.submitBtn} type="submit">{props.isLoading ? <Loader/> : 'Submit'}</button>
             </Form>
 
         </div>
@@ -128,28 +132,31 @@ const RestaurantFormikForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
-        if (props.state) {
-            const fd = new FormData();
-            fd.append('name', values.name);
-            fd.append('cuisine', values.cuisine);
-            fd.append('location', values.loca);
-            fd.append('hours', values.hours);
-            fd.append('rating', values.rating);
-            fd.append('review', values.review);
-            if (props.file instanceof File) {
+        console.log(props.isLoading)
+        if (!props.isLoading) {
+            if (props.state) {
+                const fd = new FormData();
+                fd.append('name', values.name);
+                fd.append('cuisine', values.cuisine);
+                fd.append('location', values.loca);
+                fd.append('hours', values.hours);
+                fd.append('rating', values.rating);
+                fd.append('review', values.review);
+                if (props.file instanceof File) {
+                    fd.append('photo', props.file);
+                }
+                props.updateRestaurant(props.match.params.id, fd, props.history)
+            } else {
+                const fd = new FormData();
+                fd.append('name', values.name);
+                fd.append('cuisine', values.cuisine);
+                fd.append('location', values.loca);
+                fd.append('hours', values.hours);
+                fd.append('rating', values.rating);
+                fd.append('review', values.review);
                 fd.append('photo', props.file);
+                props.createRestaurant(fd, props.history)
             }
-            props.updateRestaurant(props.match.params.id, fd, props.history)
-        } else {
-            const fd = new FormData();
-            fd.append('name', values.name);
-            fd.append('cuisine', values.cuisine);
-            fd.append('location', values.loca);
-            fd.append('hours', values.hours);
-            fd.append('rating', values.rating);
-            fd.append('review', values.review);
-            fd.append('photo', props.file);
-            props.createRestaurant(fd, props.history)
         }
     }
 
@@ -158,7 +165,9 @@ const RestaurantFormikForm = withFormik({
 const mapPropsToState = state => {
     return {
         file: state.restaurants.file,
-        restaurants: state.restaurants.restaurants
+        restaurants: state.restaurants.restaurants,
+        isLoading: state.restaurants.isLoading,
+        error: state.restaurants.error,
     }
 };
 

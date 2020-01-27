@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -8,6 +8,11 @@ import {getDishes} from "../../store/dishes/dishesActions";
 import Filters from "../filter/Filter";
 import burger from './burgerIcon.jpg'
 import Typography from "@material-ui/core/Typography";
+import {getRestaurants} from "../../store/restaurants/restaurantsActions";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogActions from "@material-ui/core/DialogActions";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     },
     empty: {
         margin: 'auto',
-        textAlign: 'center'
+        paddingTop: 100,
     },
 }));
 
@@ -55,37 +60,72 @@ function Dishes(props) {
 
     useEffect(() => {
         props.getDishes();
+        props.getRestaurants();
     }, []);
+
+    const [dialog, setDialog] = useState(false);
+
+    const handleClickOpen = () => {
+        setDialog(true);
+    };
+
+    const handleClose = () => {
+        setDialog(false);
+    };
 
     return (
         <div className={classes.root}>
 
+            <Dialog
+                open={dialog}
+                onClose={handleClose}
+            >
+                <DialogTitle
+                    id="alert-dialog-title">You don`t have any restaurants yet. Do you want to create your first
+                    restaurant?</DialogTitle>
+                <DialogActions style={{margin: '0 auto'}}>
+                    <Button onClick={handleClose} style={{color: '#2468ff'}}>
+                        No
+                    </Button>
+                    <Button color="primary" autoFocus
+                            onClick={() => props.history.push('/dashboard/restaurants/create-restaurant')}>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             {/*left side*/}
             <div className={classes.filters}>
-                <Button className={classes.filter} color={"primary"}
-                        onClick={() => props.history.push('/dashboard/dishes/create-review')}>
-                    Create review
-                </Button>
+                {props.restaurants.length > 0 ?
+                    <Button className={classes.filter} color={"primary"}
+                            onClick={() => props.history.push('/dashboard/dishes/create-review')}>
+                        Create review
+                    </Button>
+                    :
+                    <Button className={classes.filter} color={"primary"} onClick={handleClickOpen}>
+                        Create review
+                    </Button>
+                }
+
                 <div className={classes.filter}>
                     <Filters state={true}/>
                 </div>
             </div>
 
             {/*right side*/}
-            <Grid container spacing={1} className={classes.content}>
-                {props.dishes.length > 0 ? (
-                    props.dishes.map((dish, index) => (
-                        <Grid item xs={12} key={index}>
-                            <Dish state={true} dish={dish}/>
-                        </Grid>
-                    ))
-                )
-                :
-                    <div  className={classes.empty}>
-                        <img src={burger} className={classes.emptyImg}/>
-                        <Typography style={{color: 'red'}} variant={"h6"}>You don`t have any dishes yet</Typography>
-                    </div>
-
+            <Grid container spacing={1} className={classes.content} alignContent={"flex-start"}>
+                {
+                    props.dishes.length > 0 ? (
+                            props.dishes.map((dish, index) => (
+                                <Grid item xs={12} key={index}>
+                                    <Dish state={true} dish={dish}/>
+                                </Grid>
+                            )))
+                        :
+                        <div className={classes.empty}>
+                            <img src={burger} className={classes.emptyImg}/>
+                            <Typography style={{color: 'red'}} variant={"h6"}>You don`t have any dishes yet</Typography>
+                        </div>
                 }
             </Grid>
         </div>
@@ -96,8 +136,9 @@ const mapStateToProps = state => {
     return {
         isLoading: state.dishes.isLoading,
         error: state.dishes.error,
-        dishes: state.dishes.filteredDishes
+        dishes: state.dishes.filteredDishes,
+        restaurants: state.restaurants.restaurants,
     }
 };
 
-export default connect(mapStateToProps, {getDishes})(Dishes)
+export default connect(mapStateToProps, {getDishes, getRestaurants})(Dishes)

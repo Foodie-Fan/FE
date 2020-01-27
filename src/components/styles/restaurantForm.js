@@ -44,12 +44,17 @@ export const useFormStyles = makeStyles({
             border: "1.5px solid #FF472C",
         }
     },
+    errorMessage: {
+        color: '#ffce0b',
+    },
     rating: {
         marginTop: 15,
         marginBottom: 15,
         margin: "auto"
     },
     submitBtn: {
+        outline: 'none',
+        position: "relative",
         background: "#328ece",
         color: 'white',
         fontSize: '1rem',
@@ -61,6 +66,7 @@ export const useFormStyles = makeStyles({
         justifyContent: 'center',
         marginTop: '30px',
         margin: 'auto',
+        pointerEvents: props => props.isLoading && 'none',
         "&:hover": {
             background: "#379de6",
             color: 'white',

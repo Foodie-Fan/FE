@@ -31,7 +31,8 @@ export const createRestaurant = (restaurant, history) => dispatch => {
             history.push('/dashboard/restaurants')
         })
         .catch(err => {
-            dispatch({type: CREATE_RESTAURANT_FAIL, payload: err.response});
+            console.log('err.response.data.error', err.response.data.error);
+            dispatch({type: CREATE_RESTAURANT_FAIL, payload: err.response.data.error});
         })
 };
 

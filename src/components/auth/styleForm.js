@@ -25,6 +25,8 @@ const useStyles = makeStyles({
         padding: 15,
     },
     submitBtn: {
+        outline: 'none',
+        position: 'relative',
         background: "#328ece",
         color: 'white',
         fontSize: '1rem',

@@ -11,6 +11,7 @@ import {createDish, getDishes, setImage, updateReview} from "../../store/dishes/
 import Rating from "@material-ui/lab/Rating";
 import SearchField from "../search/Search";
 import {getRestaurants} from "../../store/restaurants/restaurantsActions";
+import Loader from "../styles/Loader";
 
 function DishForm(props) {
     const classes = useFormStyles();
@@ -120,7 +121,7 @@ function DishForm(props) {
 
                 <ImgDropAndCrop setImage={setFile}/>
 
-                <button className={classes.submitBtn} type="submit">{props.isLoading ? "..." : "Submit "}</button>
+                <button className={classes.submitBtn} type="submit">{props.isLoading ? <Loader/> : "Submit "}</button>
             </Form>
             }
 
@@ -151,30 +152,33 @@ const DishFormikForm = withFormik({
     }),
 
     handleSubmit(values, {props}) {
-        if (props.state) {
-            console.log('VALUES ', values);
-            const fd = new FormData();
-            fd.append('name', values.name);
-            fd.append('cuisine', values.cuisine);
-            fd.append('restaurant_id', values.restaurant_id);
-            fd.append('rating', values.rating);
-            fd.append('review', values.review);
-            fd.append('price', values.price);
-            if (props.file instanceof File) {
+        if (!props.isLoading) {
+            if (props.state) {
+                console.log('VALUES ', values);
+                const fd = new FormData();
+                fd.append('name', values.name);
+                fd.append('cuisine', values.cuisine);
+                fd.append('restaurant_id', values.restaurant_id);
+                fd.append('rating', values.rating);
+                fd.append('review', values.review);
+                fd.append('price', values.price);
+                if (props.file instanceof File) {
+                    fd.append('photo', props.file);
+                }
+                props.updateReview(props.match.params.id, fd, props.history)
+            } else {
+                const fd = new FormData();
+                fd.append('name', values.name);
+                fd.append('cuisine', values.cuisine);
+                fd.append('restaurant_id', values.restaurant_id);
+                fd.append('rating', values.rating);
+                fd.append('review', values.review);
+                fd.append('price', values.price);
                 fd.append('photo', props.file);
+                props.createDish(fd, props.history)
             }
-            props.updateReview(props.match.params.id, fd, props.history)
-        } else {
-            const fd = new FormData();
-            fd.append('name', values.name);
-            fd.append('cuisine', values.cuisine);
-            fd.append('restaurant_id', values.restaurant_id);
-            fd.append('rating', values.rating);
-            fd.append('review', values.review);
-            fd.append('price', values.price);
-            fd.append('photo', props.file);
-            props.createDish(fd, props.history)
         }
+
     }
 
 })(DishForm);
@@ -182,6 +186,7 @@ const DishFormikForm = withFormik({
 const mapPropsToState = state => {
     return {
         file: state.dishes.file,
+        isLoading: state.dishes.isLoading,
         restaurants: state.restaurants.restaurants,
         dishes: state.dishes.dishes,
     }
